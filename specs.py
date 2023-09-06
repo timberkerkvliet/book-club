@@ -1,26 +1,27 @@
-from dsl import Actor, AddANewMember
+from unittest import IsolatedAsyncioTestCase
+
+from dsl import Actor, AddANewMember, executable_play
 
 
-async def test_added_member_receive_welcome_mail():
-    timber = Actor().with_president_role()
-    daniel = Actor().with_member_role()
+class Test(IsolatedAsyncioTestCase):
+    async def test_added_member_receives_welcome(self) -> None:
+        async with executable_play() as play:
+            timber = play.with_actor_called('Timber').who_can_access_presidential_interface()
+            daniel = play.with_actor_called('Daniel')
 
-    timber.performs(
-        AddANewMember().with_name('Daniel').with_mail_address('lklk@mailli')
-    )
+            timber.performs(
+                AddANewMember().for_actor(daniel)
+            )
 
-    daniel.expects(
-        WelcomeMailReceived()
-    )
+            daniel.expects(WelcomeReceived())
 
+    async def test_when_add_a_member_then_president_receives_updated_list(self) -> None:
+        timber = Actor().with_president_role()
 
-async def test_when_add_a_member_then_president_receives_updated_list():
-    timber = Actor().with_president_role()
+        timber.performs(
+            AddANewMember().with_name('Daniel').with_mail_address('lklk@mailli')
+        )
 
-    timber.performs(
-        AddANewMember().with_name('Daniel').with_mail_address('lklk@mailli')
-    )
-
-    timber.expects(
-        MemberListMailReceived().with_member('Daniel')
-    )
+        timber.expects(
+            MemberListReceived().with_member('Daniel')
+        )
