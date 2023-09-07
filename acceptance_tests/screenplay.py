@@ -7,7 +7,7 @@ from acceptance_tests.actor_name import ActorName
 from acceptance_tests.notes import NoteBookCollection
 
 
-class Stage:
+class ScreenPlay:
     def __init__(self):
         self._parts = []
         self._note_book_collection = NoteBookCollection()
@@ -28,7 +28,7 @@ class Stage:
 
 
 @asynccontextmanager
-async def executable_spec() -> Stage:
-    stage = Stage()
+async def screenplay() -> ScreenPlay:
+    stage = ScreenPlay()
     yield stage
     await stage.execute()
