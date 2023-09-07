@@ -6,6 +6,8 @@ from acceptance_tests.actor import ActorName
 from acceptance_tests.part import Part
 from acceptance_tests.notes import MyNameIs, Note, NoteBook, NoteFinder
 from add_a_new_member import AddNewMemberCommand
+from app import request_handler
+from request_handler import handle_command
 
 
 @dataclass(frozen=True)
@@ -24,10 +26,10 @@ class AddActorAsANewMember(Part):
     ):
         name_note = note_finder.find_notes_of(self._new_member).find_one_note(MyNameIs)
 
-        handle_request(
+        await handle_command(
             AddNewMemberCommand(
                 name=name_note.name,
-                mail_address=mail_address_note.mail_address,
+                mail_address='a@a.com',
             )
         )
 

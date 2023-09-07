@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import NewType
 
+from acceptance_tests.mail_client import MailClient
 from mail_address import MailAddress
 from member import Member
 from member_repository import MemberRepository
@@ -18,10 +19,14 @@ async def add_a_new_member(
     member_repository: MemberRepository,
     mail_client: MailClient
 ) -> None:
+    address = MailAddress(command.mail_address)
     member = Member(
         name=Name(command.name),
-        mail_address=MailAddress(command.mail_address)
+        mail_address=address
     )
     await member_repository.add_member(member)
 
-    await mail_client.mail(format_welcome_mail(member))
+    await mail_client.send(
+        to=address,
+        body=f'Hey {member.name}!'
+    )
