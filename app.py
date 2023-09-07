@@ -12,7 +12,3 @@ def app_member_repository():
 @lru_cache
 def app_mail_client():
     return FakeMailClient()
-
-
-def request_handler():
-    return RequestHandler()
