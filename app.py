@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from acceptance_tests.mail_client import FakeMailClient
+from mail_client import FakeMailClient
 from member_repository import InMemoryMemberRepository
 
 

@@ -1,7 +1,6 @@
 from dataclasses import dataclass
-from typing import NewType
 
-from acceptance_tests.mail_client import MailClient
+from mail_client import MailClient
 from mail_address import MailAddress
 from member import Member
 from member_repository import MemberRepository
