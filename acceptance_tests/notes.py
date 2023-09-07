@@ -15,21 +15,6 @@ class NoteNotFound:
     pass
 
 
-@dataclass(frozen=True)
-class MyNameIs(Note):
-    name: str
-
-
-@dataclass(frozen=True)
-class IAmPresident(Note):
-    presidential_token: str
-
-
-@dataclass(frozen=True)
-class NewMemberAdded(Note):
-    name: str
-
-
 T = TypeVar('T')
 
 

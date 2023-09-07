@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from acceptance_tests.actor_name import ActorName
 from acceptance_tests.part import Part
-from acceptance_tests.notes import MyNameIs, Note, NoteBook, NoteFinder
+from acceptance_tests.notes import Note, NoteBook, NoteFinder
 from add_a_new_member import AddNewMemberCommand
 from request_handler import handle_command
 
