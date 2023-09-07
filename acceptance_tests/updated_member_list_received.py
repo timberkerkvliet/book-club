@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from acceptance_tests.part import Part
+from acceptance_tests.action import Action
 from acceptance_tests.notes import NoteBook, NoteFinder
 
 
-class UpdatedMemberListReceived(Part):
+class UpdatedMemberListReceived(Action):
     async def execute(
         self,
         note_finder: NoteFinder,

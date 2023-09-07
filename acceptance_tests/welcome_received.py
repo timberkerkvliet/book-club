@@ -1,15 +1,14 @@
 from __future__ import annotations
 
-from acceptance_tests.part import Part
-from acceptance_tests.notes import NoteBook, NoteFinder
+from acceptance_tests.expectation import Expectation
+from acceptance_tests.notes import NoteFinder
 from app import app_mail_client
 
 
-class WelcomeReceived(Part):
-    async def execute(
+class WelcomeReceived(Expectation):
+    async def verify(
         self,
-        note_finder: NoteFinder,
-        actor_note_book: NoteBook
+        note_finder: NoteFinder
     ):
         mail_fake = app_mail_client()
 

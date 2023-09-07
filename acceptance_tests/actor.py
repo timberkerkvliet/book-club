@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from acceptance_tests.actor_name import ActorName
+from acceptance_tests.expectation import Expectation
 from acceptance_tests.notes import NoteBook, NoteFinder
-from acceptance_tests.part import Part
+from acceptance_tests.action import Action
 
 
 class Actor:
@@ -22,7 +23,7 @@ class Actor:
     def name(self) -> ActorName:
         return self._name
 
-    def performs(self, *interactions: Part) -> None:
+    def performs(self, *interactions: Action) -> None:
         for interaction in interactions:
             self._add_part(
                 interaction.execute(
@@ -31,11 +32,10 @@ class Actor:
                 )
             )
 
-    def expects(self, *assertions: Part) -> None:
-        for assertion in assertions:
+    def expects(self, *expectations: Expectation) -> None:
+        for expectation in expectations:
             self._add_part(
-                assertion.execute(
+                expectation.verify(
                     note_finder=self._note_finder,
-                    actor_note_book=self._note_book
                 )
             )
