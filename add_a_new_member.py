@@ -28,5 +28,5 @@ async def add_a_new_member(
 
     await mail_client.send(
         to=address,
-        body=f'Hey {member.name}!'
+        body=f'Welcome {member.name}!'
     )

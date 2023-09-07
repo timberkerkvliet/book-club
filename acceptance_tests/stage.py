@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from contextlib import asynccontextmanager
 
-from acceptance_tests.actor import Actor, ActorName
+from acceptance_tests.actor import Actor
+from acceptance_tests.actor_name import ActorName
 from acceptance_tests.notes import NoteBookCollection
 
 
@@ -17,8 +18,8 @@ class Stage:
         return Actor(
             name=name,
             note_book=actors_note_book,
-            note_book_collection_viewer=self._note_book_collection,
-            add_part=self._parts.extend
+            note_finder=self._note_book_collection,
+            add_part=self._parts.append
         )
 
     async def execute(self) -> None:

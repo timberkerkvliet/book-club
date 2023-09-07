@@ -1,12 +1,8 @@
 from __future__ import annotations
 
-from typing import NewType
-
+from acceptance_tests.actor_name import ActorName
 from acceptance_tests.notes import NoteBook, NoteFinder
 from acceptance_tests.part import Part
-
-
-ActorName = NewType('ActorName', str)
 
 
 class Actor:
@@ -22,6 +18,10 @@ class Actor:
         self._note_finder = note_finder
         self._add_part = add_part
 
+    @property
+    def name(self) -> ActorName:
+        return self._name
+
     def performs(self, *interactions: Part) -> None:
         for interaction in interactions:
             self._add_part(
@@ -35,7 +35,7 @@ class Actor:
         for assertion in assertions:
             self._add_part(
                 assertion.execute(
-                    public_note_book=self._public_note_book,
-                    actor_note_book=self._private_note_book
+                    note_finder=self._note_finder,
+                    actor_note_book=self._note_book
                 )
             )

@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Type, TypeVar
 
-from acceptance_tests.actor import ActorName
+from acceptance_tests.actor_name import ActorName
 
 
 class Note:
@@ -51,9 +51,9 @@ class NoteBookCollection(NoteFinder):
     def __init__(self):
         self._notebooks: dict[ActorName, NoteBook] = {}
 
-    def add_notebook_for(self, actor: ActorName) -> NoteBook:
-        note_book = NoteBook(actor)
-        self._notebooks[actor] = note_book
+    def add_notebook_for(self, actor_name: ActorName) -> NoteBook:
+        note_book = NoteBook(actor_name)
+        self._notebooks[actor_name] = note_book
         return note_book
 
     def find_notes_of(self, actor: ActorName) -> NoteBook:
