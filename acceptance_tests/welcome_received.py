@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from acceptance_tests.expectation import Expectation
-from acceptance_tests.notes import NoteFinder
+from screenplay.expectation import Expectation
+from screenplay.notes import NoteFinder
 from app import app_mail_client
 
 

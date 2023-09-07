@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from contextlib import asynccontextmanager
 
-from acceptance_tests.actor import Actor
-from acceptance_tests.actor_name import ActorName
-from acceptance_tests.notes import NoteBookCollection
+from screenplay.actor import Actor
+from screenplay.actor_name import ActorName
+from screenplay.notes import NoteBookCollection
 
 
 class ScreenPlay:

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from acceptance_tests.notes import NoteBook, NoteFinder
+from screenplay.notes import NoteFinder
 
 
 class Expectation(ABC):

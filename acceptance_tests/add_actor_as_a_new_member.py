@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from acceptance_tests.actor_name import ActorName
-from acceptance_tests.action import Action
-from acceptance_tests.notes import Note, NoteBook, NoteFinder
+from screenplay.actor_name import ActorName
+from screenplay.action import Action
+from screenplay.notes import Note, NoteBook, NoteFinder
 from add_a_new_member import AddNewMemberCommand
 from request_handler import handle_command
 

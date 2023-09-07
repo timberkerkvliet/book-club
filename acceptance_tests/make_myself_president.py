@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from acceptance_tests.action import Action
-from acceptance_tests.notes import NoteBook, NoteFinder
+from screenplay.action import Action
+from screenplay.notes import NoteBook, NoteFinder
 
 
 class MakeMyselfPresident(Action):

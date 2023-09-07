@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from acceptance_tests.actor_name import ActorName
-from acceptance_tests.expectation import Expectation
-from acceptance_tests.notes import NoteBook, NoteFinder
-from acceptance_tests.action import Action
+from screenplay.actor_name import ActorName
+from screenplay.expectation import Expectation
+from screenplay.notes import NoteBook, NoteFinder
+from screenplay.action import Action
 
 
 class Actor:

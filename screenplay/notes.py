@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
 from typing import Type, TypeVar
 
-from acceptance_tests.actor_name import ActorName
+from screenplay.actor_name import ActorName
 
 
 class Note:
