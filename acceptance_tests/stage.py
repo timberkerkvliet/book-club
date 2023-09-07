@@ -12,7 +12,7 @@ class Stage:
         self._parts = []
         self._note_book_collection = NoteBookCollection()
 
-    def actor(self, name: ActorName) -> Actor:
+    def actor_named(self, name: ActorName) -> Actor:
         actors_note_book = self._note_book_collection.add_notebook_for(name)
 
         return Actor(

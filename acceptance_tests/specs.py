@@ -10,10 +10,10 @@ from acceptance_tests.welcome_received import WelcomeReceived
 class Test(IsolatedAsyncioTestCase):
     async def test_added_member_receives_welcome(self) -> None:
         async with executable_spec() as stage:
-            timber = stage.actor(ActorName('Timber'))
+            timber = stage.actor_named(ActorName('Timber'))
             timber.performs(MakeMyselfPresident())
 
-            daniel = stage.actor(ActorName('Daniel'))
+            daniel = stage.actor_named(ActorName('Daniel'))
             timber.performs(AddActorAsANewMember(daniel.name))
 
             daniel.expects(WelcomeReceived())
