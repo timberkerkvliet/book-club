@@ -4,21 +4,18 @@ from contextlib import asynccontextmanager
 
 from screenplay.actor import Actor
 from screenplay.actor_name import ActorName
-from screenplay.notes import NoteBookCollection
+from screenplay.notes import NoteRecords
 
 
 class ScreenPlay:
     def __init__(self):
         self._parts = []
-        self._note_book_collection = NoteBookCollection()
+        self._note_records = NoteRecords()
 
     def actor_named(self, name: ActorName) -> Actor:
-        actors_note_book = self._note_book_collection.add_notebook_for(name)
-
         return Actor(
             name=name,
-            note_book=actors_note_book,
-            note_finder=self._note_book_collection,
+            note_records=self._note_records,
             add_part=self._parts.append
         )
 

@@ -1,29 +1,32 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Type, TypeVar
+from dataclasses import dataclass
+from typing import Generic, Iterable, Iterator, Tuple, Type, TypeVar
 
 from screenplay.actor_name import ActorName
+
+
+T = TypeVar('T')
 
 
 class Note:
     pass
 
 
-class NoteNotFound:
-    pass
-
-
-T = TypeVar('T')
+@dataclass(frozen=True)
+class NoteRecord(Generic[T]):
+    author: ActorName
+    note: T
 
 
 class NoteFinder(ABC):
     @abstractmethod
-    def find_notes(self, note_type: Type[T]) -> set[T]:
+    def find_note_type(self, note_type: Type[T]) -> NoteFinder:
         """Find notes of a certain type"""
 
     @abstractmethod
-    def find_one_note(self, note_type: Type[T]) -> T | NoteNotFound:
+    def one(self) -> Note:
         """Find precisely one note of a certain type"""
 
     @abstractmethod
@@ -31,53 +34,53 @@ class NoteFinder(ABC):
         """View notes of certain actor"""
 
 
-class NoteBookCollection(NoteFinder):
-    def __init__(self):
-        self._notebooks: dict[ActorName, NoteBook] = {}
-
-    def add_notebook_for(self, actor_name: ActorName) -> NoteBook:
-        note_book = NoteBook(actor_name)
-        self._notebooks[actor_name] = note_book
-        return note_book
-
-    def find_notes_of(self, actor: ActorName) -> NoteBook:
-        return self._notebooks[actor]
-
-    def find_notes(self, note_type: Type[T]) -> set[T]:
-        result = set()
-        for note_book in self._notebooks.values():
-            result |= note_book.find_notes(note_type)
-
-        return result
-
-    def find_one_note(self, note_type: Type[T]) -> T | NoteNotFound:
-        notes = self.find_notes(note_type)
-        if len(notes) == 1:
-            return notes.pop()
-
-        return NoteNotFound()
-
-
-class NoteBook(NoteFinder):
-    def __init__(self, owner: ActorName):
-        self._notes = set()
-        self._owner = owner
-
-    def find_notes(self, note_type: Type[T]) -> set[T]:
-        return {note for note in self._notes if isinstance(note, note_type)}
-
-    def find_one_note(self, note_type: Type[T]) -> T | NoteNotFound:
-        for note in self._notes:
-            if isinstance(note, note_type):
-                return note
-
-        return NoteNotFound()
-
-    def find_notes_of(self, actor: ActorName) -> NoteFinder:
-        if actor == self._owner:
-            return self
-
-        return NoteBook(owner=actor)
+class NoteWriter(ABC):
+    def __init__(self, author: ActorName, collection: NoteRecords):
+        self._author = author
+        self._collection = collection
 
     def write(self, note: Note) -> None:
-        self._notes.add(note)
+        self._collection.add(
+            NoteRecord(
+                author=self._author,
+                note=note
+            )
+        )
+
+
+class NoteRecords(NoteFinder):
+    def __init__(self, records: list[NoteRecord] = None):
+        self._records = records or []
+
+    def find_note_type(self, note_type: Type[T]) -> NoteRecords:
+        return NoteRecords(
+            [
+                note_record for note_record in self._records
+                if isinstance(note_record.note, note_type)
+            ]
+        )
+
+    def one(self) -> T:
+        if len(self._records) == 1:
+            return self._records[0].note
+
+        raise Exception
+
+    def find_notes_of(self, actor: ActorName) -> NoteFinder:
+        return NoteRecords(
+            [
+                note_record
+                for note_record in self._records
+                if note_record.author == actor
+            ]
+        )
+
+    def add(self, record: NoteRecord) -> NoteRecords:
+        self._records.append(record)
+        return self
+
+    def get_writer_for(self, actor: ActorName) -> NoteWriter:
+        return NoteWriter(
+            author=actor,
+            collection=self
+        )

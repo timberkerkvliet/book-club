@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 from screenplay.action import Action
-from screenplay.notes import NoteBook, NoteFinder
+from screenplay.actor_name import ActorName
+from screenplay.notes import NoteFinder, NoteWriter
 
 
 class MakeMyselfPresident(Action):
     async def execute(
         self,
+        actor_name: ActorName,
         note_finder: NoteFinder,
-        actor_note_book: NoteBook
+        note_writer: NoteWriter
     ):
         pass

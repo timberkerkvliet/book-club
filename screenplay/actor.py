@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from screenplay.actor_name import ActorName
 from screenplay.expectation import Expectation
-from screenplay.notes import NoteBook, NoteFinder
+from screenplay.notes import NoteRecords, NoteFinder
 from screenplay.action import Action
 
 
@@ -10,13 +10,11 @@ class Actor:
     def __init__(
         self,
         name: ActorName,
-        note_book: NoteBook,
-        note_finder: NoteFinder,
+        note_records: NoteRecords,
         add_part
     ) -> None:
         self._name = name
-        self._note_book = note_book
-        self._note_finder = note_finder
+        self._note_records = note_records
         self._add_part = add_part
 
     @property
@@ -27,8 +25,9 @@ class Actor:
         for interaction in interactions:
             self._add_part(
                 interaction.execute(
-                    note_finder=self._note_finder,
-                    actor_note_book=self._note_book
+                    actor_name=self._name,
+                    note_finder=self._note_records,
+                    note_writer=self._note_records.get_writer_for(self._name)
                 )
             )
 
@@ -36,6 +35,7 @@ class Actor:
         for expectation in expectations:
             self._add_part(
                 expectation.verify(
-                    note_finder=self._note_finder,
+                    actor_name=self._name,
+                    note_finder=self._note_records,
                 )
             )

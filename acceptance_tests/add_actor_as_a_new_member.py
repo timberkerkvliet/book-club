@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from screenplay.actor_name import ActorName
 from screenplay.action import Action
-from screenplay.notes import Note, NoteBook, NoteFinder
+from screenplay.notes import Note, NoteFinder, NoteWriter
 from add_a_new_member import AddNewMemberCommand
 from request_handler import handle_command
 
@@ -20,8 +20,9 @@ class AddActorAsANewMember(Action):
 
     async def execute(
         self,
+        actor_name: ActorName,
         note_finder: NoteFinder,
-        actor_note_book: NoteBook
+        note_writer: NoteWriter
     ):
         await handle_command(
             AddNewMemberCommand(
@@ -30,4 +31,4 @@ class AddActorAsANewMember(Action):
             )
         )
 
-        actor_note_book.write(IAddedAMember(member_name=self._new_member_name))
+        note_writer.write(IAddedAMember(member_name=self._new_member_name))
