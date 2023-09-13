@@ -1,15 +1,13 @@
 from __future__ import annotations
 
-from screenplay.action import Action
-from screenplay.actor_name import ActorName
-from screenplay.notes import NoteFinder, NoteWriter
+from pyplay.action import Action
+from pyplay.action_executor import executes
 
 
 class MakeMyselfPresident(Action):
-    async def execute(
-        self,
-        actor_name: ActorName,
-        note_finder: NoteFinder,
-        note_writer: NoteWriter
-    ):
-        pass
+    pass
+
+
+@executes(MakeMyselfPresident)
+async def make_myself_president():
+    pass

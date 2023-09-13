@@ -1,19 +1,18 @@
 from unittest import IsolatedAsyncioTestCase
 
-from screenplay.actor_name import ActorName
+from acceptance_tests.book_club_spec import book_club_spec
+from pyplay.play import CharacterCall
 from acceptance_tests.add_actor_as_a_new_member import AddActorAsANewMember
 from acceptance_tests.make_myself_president import MakeMyselfPresident
-from screenplay.screen_play import screenplay
 from acceptance_tests.welcome_received import WelcomeReceived
 
 
 class Test(IsolatedAsyncioTestCase):
-    async def test_added_member_receives_welcome(self) -> None:
-        async with screenplay() as screen_play:
-            timber = screen_play.actor_named(ActorName('Timber'))
-            timber.performs(MakeMyselfPresident())
+    @book_club_spec
+    def test_added_member_receives_welcome(self, character: CharacterCall) -> None:
+        timber = character('Timber').performs(MakeMyselfPresident())
 
-            daniel = screen_play.actor_named(ActorName('Daniel'))
-            timber.performs(AddActorAsANewMember(daniel.name))
+        daniel = character('Daniel')
+        timber.performs(AddActorAsANewMember('Daniel'))
 
-            daniel.expects(WelcomeReceived())
+        daniel.asserts(WelcomeReceived())

@@ -2,33 +2,33 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from screenplay.actor_name import ActorName
-from screenplay.action import Action
-from screenplay.notes import Note, NoteFinder, NoteWriter
 from add_a_new_member import AddNewMemberCommand
+from pyplay.action import Action
+from pyplay.action_executor import executes
+from pyplay.log_book import LogBook, LogMessage
 from request_handler import handle_command
 
 
 @dataclass(frozen=True)
-class IAddedAMember(Note):
+class IAddedAMember(LogMessage):
     member_name: str
 
 
+@dataclass
 class AddActorAsANewMember(Action):
-    def __init__(self, new_member: ActorName):
-        self._new_member_name = new_member
+    new_member_name: str
 
-    async def execute(
-        self,
-        actor_name: ActorName,
-        note_finder: NoteFinder,
-        note_writer: NoteWriter
-    ):
-        await handle_command(
-            AddNewMemberCommand(
-                name=self._new_member_name,
-                mail_address='a@a.com',
-            )
+
+@executes(AddActorAsANewMember)
+async def add_actor_as_new_member(
+    action: AddActorAsANewMember,
+    log_book: LogBook
+):
+    await handle_command(
+        AddNewMemberCommand(
+            name=action.new_member_name,
+            mail_address=f'{action.new_member_name}@fake.com',
         )
+    )
 
-        note_writer.write(IAddedAMember(member_name=self._new_member_name))
+    log_book.write_message(IAddedAMember(member_name=action.new_member_name))

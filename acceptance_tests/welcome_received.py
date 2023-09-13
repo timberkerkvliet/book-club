@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from screenplay.actor_name import ActorName
-from screenplay.expectation import Expectation
-from screenplay.notes import NoteFinder
 from app import app_mail_client
+from pyplay.action import Assertion
+from pyplay.action_executor import executes
+from pyplay.actor import Actor
 
 
 @dataclass(frozen=True)
@@ -13,17 +13,12 @@ class MyMailAddress:
     address: str
 
 
-class WelcomeReceived(Expectation):
-    async def verify(
-        self,
-        actor_name: ActorName,
-        note_finder: NoteFinder
-    ):
-        mail_fake = app_mail_client()
+class WelcomeReceived(Assertion):
+    pass
 
-        my_mail_address = note_finder\
-            .find_notes_of(actor_name)\
-            .find_note_type(MyMailAddress)\
-            .one()
 
-        assert 'Welcome' in mail_fake.mails[my_mail_address]
+@executes(WelcomeReceived)
+async def welcome_received(actor: Actor):
+    mail_fake = app_mail_client()
+    address = f'{actor.character_name}@fake.com'
+    assert 'Welcome' in mail_fake.mails[address]
