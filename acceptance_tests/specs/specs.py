@@ -1,10 +1,10 @@
 from unittest import IsolatedAsyncioTestCase
 
-from acceptance_tests.book_club_spec import book_club_spec
+from acceptance_tests.specs.book_club_spec import book_club_spec
 from pyplay.play import CharacterCall
-from acceptance_tests.add_actor_as_a_new_member import AddActorAsANewMember
-from acceptance_tests.make_myself_president import MakeMyselfPresident
-from acceptance_tests.welcome_received import WelcomeReceived
+from acceptance_tests.actions.add_actor_as_a_new_member import AddActorAsANewMember
+from acceptance_tests.actions.make_myself_president import MakeMyselfPresident
+from acceptance_tests.actions.welcome_received import WelcomeReceived
 
 
 class Test(IsolatedAsyncioTestCase):
