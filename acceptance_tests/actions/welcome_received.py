@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from app import app_mail_client
+from book_club.app import app_mail_client
 from pyplay.action import Assertion
 from pyplay.action_executor import executes
 from pyplay.actor import Actor

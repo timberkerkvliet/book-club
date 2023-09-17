@@ -1,7 +1,7 @@
 from functools import lru_cache
 
-from mail_client import FakeMailClient
-from member_repository import InMemoryMemberRepository
+from book_club.mail_client import FakeMailClient
+from book_club.member_repository import InMemoryMemberRepository
 
 
 @lru_cache

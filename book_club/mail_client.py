@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from mail_address import MailAddress
+from book_club.mail_address import MailAddress
 
 
 class MailClient(ABC):

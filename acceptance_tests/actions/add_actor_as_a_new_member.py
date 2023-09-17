@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from add_a_new_member import AddNewMemberCommand
+from book_club.add_a_new_member import AddNewMemberCommand
 from pyplay.action import Action
 from pyplay.action_executor import executes
 from pyplay.log_book import LogBook, LogMessage
-from request_handler import handle_command
+from book_club.request_handler import handle_command
 
 
 @dataclass(frozen=True)

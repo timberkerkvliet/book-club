@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from member import Member
+from book_club.member import Member
 
 
 class MemberRepository(ABC):

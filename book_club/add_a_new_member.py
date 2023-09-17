@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
-from mail_client import MailClient
-from mail_address import MailAddress
-from member import Member
-from member_repository import MemberRepository
-from name import Name
+from book_club.mail_client import MailClient
+from book_club.mail_address import MailAddress
+from book_club.member import Member
+from book_club.member_repository import MemberRepository
+from book_club.name import Name
 
 
 @dataclass(frozen=True)
