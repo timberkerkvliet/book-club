@@ -10,9 +10,9 @@ from acceptance_tests.actions.welcome_received import WelcomeReceived
 class Test(IsolatedAsyncioTestCase):
     @book_club_spec
     def test_added_member_receives_welcome(self, character: CharacterCall) -> None:
-        timber = character('Timber').performs(MakeMyselfPresident())
+        timber = character('John').performs(MakeMyselfPresident())
 
-        daniel = character('Daniel')
-        timber.performs(AddActorAsANewMember('Daniel'))
+        chris = character('Chris')
+        timber.performs(AddActorAsANewMember('Chris'))
 
-        daniel.asserts(WelcomeReceived())
+        chris.asserts(WelcomeReceived())
