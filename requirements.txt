@@ -1,0 +1,4 @@
+starlette==0.20.4
+uvicorn==0.18.2
+requests
+aiohttp
