@@ -8,7 +8,7 @@ async def run():
     adapter = StarletteRequestHandler(
         request_handler=request_handler()
     )
-    await run_server(adapter, host='0.0.0.0', port=8000)
+    await run_server(adapter, host='0.0.0.0', port=80)
 
 
 asyncio.run(run())
