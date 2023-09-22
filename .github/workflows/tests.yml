@@ -41,16 +41,12 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
     - name: Set up GitHub CLI
       run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
-
-    - name: Create Release and Tag
+    - name: Create Tag
       run: |
         VERSION="$(date +'%Y.%m.%d.%H.%M.%S')"
-        RELEASE_NAME="Release $VERSION"
-        gh release create $VERSION \
-          --title "$VERSION" \
-          --notes "Release notes for $VERSION"
+        git tag $VERSION
+        git push origin $VERSION
     - name: Deploy
       run: "curl -X POST -H 'Content-Type: application/text' -H 'Authorization: Bearer token' -d $VERSION http://bookclub701.nl:8080/"
