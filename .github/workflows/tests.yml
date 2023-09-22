@@ -35,3 +35,29 @@ jobs:
         pip install -r requirements.txt
     - name: Run Integration tests
       run: python -m unittest discover -s integration_tests
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up GitHub CLI
+      run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+
+    - name: Create Release and Tag
+      run: |
+        VERSION="$(date +'%Y.%m.%d.%H.%M.%S')"
+        RELEASE_NAME="Release $VERSION"
+        gh release create $VERSION \
+          --title "$VERSION" \
+          --notes "Release notes for $VERSION"
+    - name: Deploy
+      run: curl -X POST \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer Token" \
+     -d '{"version": "$VERSION"}' \
+     http:/bookclub701.nl:8080/
+
+
+
