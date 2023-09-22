@@ -53,4 +53,4 @@ jobs:
           --title "$VERSION" \
           --notes "Release notes for $VERSION"
     - name: Deploy
-      run: curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer Token" -d "{\"version\": \"$VERSION\"}" http:/bookclub701.nl:8080/
+      run: "curl -X POST -H 'Content-Type: application/text' -H 'Authorization: Bearer token' -d $VERSION http://bookclub701.nl:8080/"
