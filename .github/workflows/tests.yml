@@ -43,10 +43,5 @@ jobs:
       uses: actions/checkout@v2
     - name: Set up GitHub CLI
       run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
-    - name: Create Tag
-      run: |
-        VERSION="$(git rev-parse --short HEAD)"
-        git tag $VERSION
-        git push origin $VERSION
     - name: Deploy
-      run: "curl -X POST -H 'Content-Type: application/text' -H 'Authorization: Bearer token' -d $VERSION http://bookclub701.nl:8080/"
+      run: "curl -X POST -H 'Content-Type: application/text' -H 'Authorization: Bearer token' -d $(git rev-parse --short HEAD) http://bookclub701.nl:8080/"
