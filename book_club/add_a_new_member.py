@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from book_club.app import app_mail_client
 from book_club.mail_client import MailClient
 from book_club.mail_address import MailAddress
 from book_club.member import Member
@@ -15,17 +16,14 @@ class AddNewMemberCommand:
 
 async def add_a_new_member(
     command: AddNewMemberCommand,
-    member_repository: MemberRepository,
-    mail_client: MailClient
 ) -> None:
     address = MailAddress(command.mail_address)
     member = Member(
         name=Name(command.name),
         mail_address=address
     )
-    await member_repository.add_member(member)
 
-    await mail_client.send(
+    await app_mail_client().send(
         to=address,
         body=f'Welcome {member.name}!'
     )

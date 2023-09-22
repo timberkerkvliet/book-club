@@ -5,25 +5,33 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from uvicorn import Config, Server
 
+from book_club.request_handler import RequestHandler
 
-class StarletteAdapter:
+
+class StarletteRequestHandler:
     def __init__(
         self,
-        endpoint_map: dict,
-        handler
+        request_handler: RequestHandler
     ):
-        self._endpoint_map = endpoint_map
-        self._handler = handler
+        self._request_handler = request_handler
 
     async def handle_command(self, request: Request) -> JSONResponse:
-        command = self._endpoint_map[request.url.path.lstrip('/')]
+        name = request.url.path.lstrip('/')
+
+        command_types = {
+            command_type
+            for command_type in self._request_handler.command_types
+            if command_type.__name__ == name
+        }
+
+        command_type = command_types.pop()
         data = await request.json()
-        value = await self._handler(command(**data))
+        value = await self._request_handler.handle_command(command_type(**data))
 
         return JSONResponse(value, status_code=200)
 
 
-async def run_server(adapter: StarletteAdapter, host: str, port: int):
+async def run_server(adapter: StarletteRequestHandler, host: str, port: int):
     starlette_app = Starlette()
 
     starlette_app.add_route(

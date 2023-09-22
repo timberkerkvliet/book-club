@@ -3,10 +3,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from book_club.add_a_new_member import AddNewMemberCommand
+from book_club.request_handler import request_handler
 from pyplay.action import Action
 from pyplay.action_executor import executes
 from pyplay.log_book import LogBook, LogMessage
-from book_club.request_handler import handle_command
 
 
 @dataclass(frozen=True)
@@ -24,7 +24,8 @@ async def add_actor_as_new_member(
     action: AddActorAsANewMember,
     log_book: LogBook
 ):
-    await handle_command(
+    handler = request_handler()
+    await handler.handle_command(
         AddNewMemberCommand(
             name=action.new_member_name,
             mail_address=f'{action.new_member_name}@fake.com',
