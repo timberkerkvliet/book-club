@@ -41,7 +41,5 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Set up GitHub CLI
-      run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
-    - name: Deploy
+    - name: Trigger Deploy
       run: "curl -X POST -H 'Content-Type: application/text' -H 'Authorization: Bearer token' -d $(git rev-parse --short HEAD) http://bookclub701.nl:8080/"
