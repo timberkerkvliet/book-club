@@ -48,10 +48,10 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
                 command_handlers={}
             )
         )
-        asyncio.create_task(run_server(adapter, host='0.0.0.0', port=8000))
+        asyncio.create_task(run_server(adapter, host='0.0.0.0', port=8001))
         await asyncio.sleep(1)
 
         async with aiohttp.ClientSession() as session:
-            response = await session.post(url='http://localhost:8000/Anything')
+            response = await session.post(url='http://localhost:8001/Anything')
 
             self.assertEqual(response.status, 404)
