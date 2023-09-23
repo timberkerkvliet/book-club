@@ -2,10 +2,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from book_club.app import app_mail_client
+from book_club.adapter_type import AppContext
+from book_club.mail_client import app_mail_client, fake_mail_client
 from pyplay.action import Assertion
 from pyplay.action_executor import executes
 from pyplay.actor import Actor
+from pyplay.prop import Props
 
 
 @dataclass(frozen=True)
@@ -18,7 +20,8 @@ class WelcomeReceived(Assertion):
 
 
 @executes(WelcomeReceived)
-async def welcome_received(actor: Actor):
-    mail_fake = app_mail_client()
+async def welcome_received(actor: Actor, stage_props: Props):
+    app_context = await stage_props(AppContext)
+    mail_fake = fake_mail_client(app_context)
     address = f'{actor.character_name}@fake.com'
     assert 'Welcome' in mail_fake.mails[address]

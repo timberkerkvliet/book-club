@@ -2,11 +2,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from book_club.adapter_type import AppContext
 from book_club.add_a_new_member import AddNewMember
 from book_club.request_handler import request_handler
 from pyplay.action import Action
 from pyplay.action_executor import executes
 from pyplay.log_book import LogBook, LogMessage
+from pyplay.prop import Props
 
 
 @dataclass(frozen=True)
@@ -22,9 +24,11 @@ class AddActorAsANewMember(Action):
 @executes(AddActorAsANewMember)
 async def add_actor_as_new_member(
     action: AddActorAsANewMember,
-    log_book: LogBook
+    log_book: LogBook,
+    stage_props: Props
 ):
-    handler = request_handler()
+    app_context = await stage_props(AppContext)
+    handler = request_handler(app_context)
     await handler.handle_command(
         AddNewMember(
             name=action.new_member_name,
