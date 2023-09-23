@@ -42,4 +42,4 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Trigger Deploy
-      run: "curl -X POST -H 'Authorization: Bearer token' http://bookclub701.nl:8080/deploy/$(git rev-parse HEAD)"
+      run: "curl -X POST -H 'Authorization: Bearer  ${{ secrets.DEPLOY_TOKEN }}' http://bookclub701.nl:8080/deploy/$(git rev-parse HEAD)"
