@@ -3,10 +3,12 @@ from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from time import sleep
 from unittest import IsolatedAsyncioTestCase
+from uuid import uuid4
 
 import aiohttp
 import requests
 
+from book_club.app_context import AppContext
 from book_club.request_handler import RequestHandler
 from book_club.starlette_adapter import StarletteRequestHandler, run_server
 
@@ -37,7 +39,8 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
             request_handler=RequestHandler(
                 command_handlers={
                     MyTestCommand: handle
-                }
+                },
+                app_context=AppContext(id=uuid4(), is_fake=True)
             )
         )
         async with server(adapter), aiohttp.ClientSession() as session:
@@ -54,7 +57,8 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
     async def test_get_404_on_non_existing_requests(self):
         adapter = StarletteRequestHandler(
             request_handler=RequestHandler(
-                command_handlers={}
+                command_handlers={},
+                app_context=AppContext(id=uuid4(), is_fake=True)
             )
         )
         async with server(adapter), aiohttp.ClientSession() as session:
