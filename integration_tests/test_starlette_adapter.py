@@ -1,4 +1,5 @@
 import asyncio
+from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from time import sleep
 from unittest import IsolatedAsyncioTestCase
@@ -19,6 +20,16 @@ async def handle(request: MyTestCommand):
     return request.my_name
 
 
+@asynccontextmanager
+async def server(adapter):
+    task = asyncio.create_task(run_server(adapter, host='0.0.0.0', port=8000))
+    try:
+        yield None
+    finally:
+        task.cancel()
+        await asyncio.wait([task])
+
+
 class TestStarletteAdapter(IsolatedAsyncioTestCase):
     async def test_happy_path(self):
         adapter = StarletteRequestHandler(
@@ -28,8 +39,7 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
                 }
             )
         )
-        task = asyncio.create_task(run_server(adapter, host='0.0.0.0', port=8000))
-        try:
+        async with server(adapter):
             await asyncio.sleep(1)
 
             async with aiohttp.ClientSession() as session:
@@ -42,9 +52,6 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
                     await response.json(),
                     'Timber'
                 )
-        finally:
-            task.cancel()
-            await asyncio.wait([task])
 
     async def test_get_404_on_non_existing_requests(self):
         adapter = StarletteRequestHandler(
@@ -52,14 +59,10 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
                 command_handlers={}
             )
         )
-        task = asyncio.create_task(run_server(adapter, host='0.0.0.0', port=8000))
-        try:
+        async with server(adapter):
             await asyncio.sleep(1)
 
             async with aiohttp.ClientSession() as session:
                 response = await session.post(url='http://localhost:8000/Anything')
 
                 self.assertEqual(response.status, 404)
-        finally:
-            task.cancel()
-            await asyncio.wait([task])
