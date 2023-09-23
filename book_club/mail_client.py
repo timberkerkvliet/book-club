@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from functools import lru_cache
 
-from book_club.adapter_type import AppContext
+from book_club.app_context import AppContext
 from book_club.mail_address import MailAddress
 
 

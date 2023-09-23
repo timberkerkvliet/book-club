@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from book_club.adapter_type import AppContext
+from book_club.app_context import AppContext
 from book_club.mail_client import app_mail_client
 from book_club.mail_address import MailAddress
 from book_club.member import Member

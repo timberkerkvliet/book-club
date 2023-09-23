@@ -1,7 +1,7 @@
 from functools import lru_cache
 from typing import Type
 
-from book_club.adapter_type import AppContext
+from book_club.app_context import AppContext
 from book_club.add_a_new_member import AddNewMember, add_a_new_member
 
 
