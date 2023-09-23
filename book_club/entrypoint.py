@@ -1,5 +1,11 @@
 import asyncio
+from asyncio import Event
 
-from book_club.app import run_app
+from book_club.app import app
 
-asyncio.run(run_app())
+
+async def run():
+    async with app():
+        await Event().wait()
+
+asyncio.run(run())
