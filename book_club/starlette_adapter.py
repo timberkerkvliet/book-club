@@ -24,6 +24,9 @@ class StarletteRequestHandler:
             if command_type.__name__ == name
         }
 
+        if len(command_types) == 0:
+            return JSONResponse({}, status_code=404)
+
         command_type = command_types.pop()
         data = await request.json()
         value = await self._request_handler.handle_command(command_type(**data))
