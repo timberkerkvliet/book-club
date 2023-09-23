@@ -1,4 +1,4 @@
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, AsyncExitStack
 from functools import lru_cache
 from typing import AsyncGenerator
 from uuid import uuid4
@@ -14,7 +14,10 @@ def app_member_repository():
 
 @asynccontextmanager
 async def app(is_fake: bool = False) -> AsyncGenerator[AppContext, None]:
-    yield AppContext(
+    context = AppContext(
         id=uuid4(),
-        is_fake=is_fake
+        is_fake=is_fake,
+        exit_stack=AsyncExitStack()
     )
+    async with context.exit_stack:
+        yield context
