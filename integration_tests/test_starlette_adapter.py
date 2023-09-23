@@ -1,5 +1,5 @@
 
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, AsyncExitStack
 from dataclasses import dataclass
 from unittest import IsolatedAsyncioTestCase
 from uuid import uuid4
@@ -34,7 +34,7 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
                 command_handlers={
                     MyTestCommand: handle
                 },
-                app_context=AppContext(id=uuid4(), is_fake=True)
+                app_context=AppContext(id=uuid4(), is_fake=True, exit_stack=AsyncExitStack())
             )
         )
         async with server(adapter), aiohttp.ClientSession() as session:
@@ -52,7 +52,7 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
         adapter = StarletteRequestHandler(
             request_handler=RequestHandler(
                 command_handlers={},
-                app_context=AppContext(id=uuid4(), is_fake=True)
+                app_context=AppContext(id=uuid4(), is_fake=True, exit_stack=AsyncExitStack())
             )
         )
         async with server(adapter), aiohttp.ClientSession() as session:
