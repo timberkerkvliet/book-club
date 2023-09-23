@@ -1,7 +1,6 @@
-import asyncio
+
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
-from time import sleep
 from unittest import IsolatedAsyncioTestCase
 from uuid import uuid4
 
@@ -10,7 +9,7 @@ import requests
 
 from book_club.app_context import AppContext
 from book_club.request_handler import RequestHandler
-from book_club.starlette_adapter import StarletteRequestHandler, run_server
+from book_club.starlette_adapter import StarletteRequestHandler, starlette_server
 
 
 @dataclass
@@ -24,13 +23,8 @@ async def handle(request: MyTestCommand, app_context: AppContext):
 
 @asynccontextmanager
 async def server(adapter):
-    task = asyncio.create_task(run_server(adapter, host='0.0.0.0', port=8000))
-    try:
-        await asyncio.sleep(1)
+    async with starlette_server(adapter, host='0.0.0.0', port=8000):
         yield None
-    finally:
-        task.cancel()
-        await asyncio.wait([task])
 
 
 class TestStarletteAdapter(IsolatedAsyncioTestCase):

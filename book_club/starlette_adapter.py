@@ -1,4 +1,5 @@
 from asyncio import Event
+from contextlib import asynccontextmanager
 
 from starlette.applications import Starlette
 from starlette.requests import Request
@@ -34,7 +35,8 @@ class StarletteRequestHandler:
         return JSONResponse(value, status_code=200)
 
 
-async def run_server(adapter: StarletteRequestHandler, host: str, port: int):
+@asynccontextmanager
+async def starlette_server(adapter: StarletteRequestHandler, host: str, port: int):
     starlette_app = Starlette()
 
     starlette_app.add_route(
@@ -53,6 +55,6 @@ async def run_server(adapter: StarletteRequestHandler, host: str, port: int):
     server.lifespan = config.lifespan_class(config)
     try:
         await server.startup()
-        await Event().wait()
+        yield None
     finally:
         await server.shutdown()
