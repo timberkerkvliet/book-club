@@ -24,6 +24,7 @@ async def handle(request: MyTestCommand):
 async def server(adapter):
     task = asyncio.create_task(run_server(adapter, host='0.0.0.0', port=8000))
     try:
+        await asyncio.sleep(1)
         yield None
     finally:
         task.cancel()
@@ -39,19 +40,16 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
                 }
             )
         )
-        async with server(adapter):
-            await asyncio.sleep(1)
+        async with server(adapter), aiohttp.ClientSession() as session:
+            response = await session.post(
+                url='http://localhost:8000/MyTestCommand',
+                json={'my_name': 'Timber'}
+            )
 
-            async with aiohttp.ClientSession() as session:
-                response = await session.post(
-                    url='http://localhost:8000/MyTestCommand',
-                    json={'my_name': 'Timber'}
-                )
-
-                self.assertEqual(
-                    await response.json(),
-                    'Timber'
-                )
+            self.assertEqual(
+                await response.json(),
+                'Timber'
+            )
 
     async def test_get_404_on_non_existing_requests(self):
         adapter = StarletteRequestHandler(
@@ -59,10 +57,7 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
                 command_handlers={}
             )
         )
-        async with server(adapter):
-            await asyncio.sleep(1)
+        async with server(adapter), aiohttp.ClientSession() as session:
+            response = await session.post(url='http://localhost:8000/Anything')
 
-            async with aiohttp.ClientSession() as session:
-                response = await session.post(url='http://localhost:8000/Anything')
-
-                self.assertEqual(response.status, 404)
+            self.assertEqual(response.status, 404)
