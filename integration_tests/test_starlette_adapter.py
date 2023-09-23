@@ -28,19 +28,23 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
                 }
             )
         )
-        asyncio.create_task(run_server(adapter, host='0.0.0.0', port=8000))
-        await asyncio.sleep(1)
+        task = asyncio.create_task(run_server(adapter, host='0.0.0.0', port=8000))
+        try:
+            await asyncio.sleep(1)
 
-        async with aiohttp.ClientSession() as session:
-            response = await session.post(
-                url='http://localhost:8000/MyTestCommand',
-                json={'my_name': 'Timber'}
-            )
+            async with aiohttp.ClientSession() as session:
+                response = await session.post(
+                    url='http://localhost:8000/MyTestCommand',
+                    json={'my_name': 'Timber'}
+                )
 
-            self.assertEqual(
-                await response.json(),
-                'Timber'
-            )
+                self.assertEqual(
+                    await response.json(),
+                    'Timber'
+                )
+        finally:
+            task.cancel()
+            await asyncio.wait([task])
 
     async def test_get_404_on_non_existing_requests(self):
         adapter = StarletteRequestHandler(
@@ -48,10 +52,14 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
                 command_handlers={}
             )
         )
-        asyncio.create_task(run_server(adapter, host='0.0.0.0', port=8001))
-        await asyncio.sleep(1)
+        task = asyncio.create_task(run_server(adapter, host='0.0.0.0', port=8000))
+        try:
+            await asyncio.sleep(1)
 
-        async with aiohttp.ClientSession() as session:
-            response = await session.post(url='http://localhost:8001/Anything')
+            async with aiohttp.ClientSession() as session:
+                response = await session.post(url='http://localhost:8000/Anything')
 
-            self.assertEqual(response.status, 404)
+                self.assertEqual(response.status, 404)
+        finally:
+            task.cancel()
+            await asyncio.wait([task])
