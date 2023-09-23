@@ -18,7 +18,7 @@ class MyTestCommand:
     my_name: str
 
 
-async def handle(request: MyTestCommand):
+async def handle(request: MyTestCommand, app_context: AppContext):
     return request.my_name
 
 
