@@ -1,6 +1,6 @@
 from typing import Type
 
-from book_club.add_a_new_member import AddNewMemberCommand, add_a_new_member
+from book_club.add_a_new_member import AddNewMember, add_a_new_member
 
 
 class RequestHandler:
@@ -19,6 +19,6 @@ class RequestHandler:
 def request_handler() -> RequestHandler:
     return RequestHandler(
         command_handlers={
-            AddNewMemberCommand: add_a_new_member
+            AddNewMember: add_a_new_member
         }
     )

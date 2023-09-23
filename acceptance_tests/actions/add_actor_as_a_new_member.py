@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from book_club.add_a_new_member import AddNewMemberCommand
+from book_club.add_a_new_member import AddNewMember
 from book_club.request_handler import request_handler
 from pyplay.action import Action
 from pyplay.action_executor import executes
@@ -26,7 +26,7 @@ async def add_actor_as_new_member(
 ):
     handler = request_handler()
     await handler.handle_command(
-        AddNewMemberCommand(
+        AddNewMember(
             name=action.new_member_name,
             mail_address=f'{action.new_member_name}@fake.com',
         )
