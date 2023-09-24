@@ -34,7 +34,7 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
                 command_handlers={
                     MyTestCommand: handle
                 },
-                app_context=AppContext(id=uuid4(), is_fake=True, exit_stack=AsyncExitStack())
+                app_context=AppContext(is_fake=True)
             )
         )
         async with server(adapter), aiohttp.ClientSession() as session:
@@ -52,7 +52,7 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
         adapter = StarletteRequestHandler(
             request_handler=RequestHandler(
                 command_handlers={},
-                app_context=AppContext(id=uuid4(), is_fake=True, exit_stack=AsyncExitStack())
+                app_context=AppContext(is_fake=True)
             )
         )
         async with server(adapter), aiohttp.ClientSession() as session:
