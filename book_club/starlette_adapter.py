@@ -6,6 +6,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from uvicorn import Config, Server
 
+from book_club.request_context import President
 from book_club.request_handler import RequestHandler
 
 
@@ -30,7 +31,10 @@ class StarletteRequestHandler:
 
         command_type = command_types.pop()
         data = await request.json()
-        value = await self._request_handler.handle_command(command_type(**data))
+        value = await self._request_handler.handle_command(
+            invoker=President(),
+            command=command_type(**data)
+        )
 
         return JSONResponse(value, status_code=200)
 
