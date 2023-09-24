@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from book_club.app_context import AppContext
-from book_club.add_a_new_member import AddNewMember
+from book_club.president.add_a_new_member import AddNewMember
 from book_club.request_handler import request_handler
 from pyplay.action import Action
 from pyplay.action_executor import executes

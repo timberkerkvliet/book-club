@@ -2,7 +2,8 @@ from functools import lru_cache
 from typing import Type
 
 from book_club.app_context import AppContext
-from book_club.add_a_new_member import AddNewMember, add_a_new_member
+from book_club.president.add_a_new_member import AddNewMember, add_a_new_member
+from book_club.president.make_myself_president import MakeMyselfPresident, make_myself_president
 
 
 class RequestHandler:
@@ -23,7 +24,8 @@ class RequestHandler:
 def request_handler(app_context: AppContext) -> RequestHandler:
     return RequestHandler(
         command_handlers={
-            AddNewMember: add_a_new_member
+            AddNewMember: add_a_new_member,
+            MakeMyselfPresident: make_myself_president
         },
         app_context=app_context
     )
