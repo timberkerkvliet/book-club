@@ -1,17 +1,24 @@
 from __future__ import annotations
 
+import typing
 from contextlib import AsyncExitStack
 
 from book_club.app_context import AppContext
-from book_club.member import Member
 
 
 class President:
     pass
 
 
+class Member:
+    pass
+
+
+Invoker = typing.Union[President, Member]
+
+
 class RequestContext:
-    def __init__(self, app_context: AppContext, invoker: President | Member):
+    def __init__(self, app_context: AppContext, invoker: Invoker):
         self._app_context = app_context
         self._invoker = invoker
 
@@ -20,7 +27,7 @@ class RequestContext:
         return self._app_context
 
     @property
-    def invoker(self) -> President | Member:
+    def invoker(self) -> Invoker:
         return self._invoker
 
     async def __aenter__(self) -> RequestContext:
