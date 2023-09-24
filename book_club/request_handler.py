@@ -4,6 +4,7 @@ from typing import Type
 from book_club.app_context import AppContext
 from book_club.president.add_a_new_member import AddNewMember, add_a_new_member
 from book_club.president.make_myself_president import MakeMyselfPresident, make_myself_president
+from book_club.request_context import RequestContext
 
 
 class RequestHandler:
@@ -15,9 +16,19 @@ class RequestHandler:
     def command_types(self) -> set[Type]:
         return set(self._command_handlers.keys())
 
-    async def handle_command(self, command) -> None:
+    async def handle_command(
+        self,
+        invoker,
+        command
+    ) -> None:
         coro = self._command_handlers[type(command)]
-        return await coro(command, self._app_context)
+        return await coro(
+            command,
+            RequestContext(
+                app_context=self._app_context,
+                invoker=invoker
+            )
+        )
 
 
 @lru_cache
