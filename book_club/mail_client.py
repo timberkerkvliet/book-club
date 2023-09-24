@@ -37,7 +37,7 @@ class SendGridClient(MailClient):
         self._from_address = from_address
 
     async def send(self, to: MailAddress, body: str) -> None:
-        self._aiohttp_session.post(
+        await self._aiohttp_session.post(
             headers={
                 'Authorization': f'Bearer {self._api_key}',
                 'Content-Type': 'application/json'
