@@ -20,7 +20,9 @@ async def add_a_new_member(command: AddNewMember, app_context: AppContext) -> No
         mail_address=address
     )
 
-    await app_mail_client(app_context).send(
+    mail_client = await app_mail_client(app_context)
+
+    await mail_client.send(
         to=address,
         body=f'Welcome {member.name}!'
     )

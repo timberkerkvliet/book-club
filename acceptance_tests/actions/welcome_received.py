@@ -22,6 +22,6 @@ class WelcomeReceived(Assertion):
 @executes(WelcomeReceived)
 async def welcome_received(actor: Actor, stage_props: Props):
     app_context = await stage_props(AppContext)
-    mail_fake = fake_mail_client(app_context)
+    mail_fake = await fake_mail_client(app_context)
     address = f'{actor.character_name}@fake.com'
     assert 'Welcome' in mail_fake.mails[address]

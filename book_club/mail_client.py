@@ -1,8 +1,10 @@
 import os
 from abc import ABC, abstractmethod
+from contextlib import asynccontextmanager
 from functools import lru_cache
+from typing import AsyncGenerator
 
-from book_club.app_context import AppContext
+from book_club.app_context import AppContext, app_resource
 from book_club.http_client_session import app_http_session
 from book_club.mail_address import MailAddress
 
@@ -57,24 +59,27 @@ class SendGridClient(MailClient):
         )
 
 
-@lru_cache
-def fake_mail_client(app: AppContext):
-    return FakeMailClient()
+@app_resource
+@asynccontextmanager
+async def fake_mail_client(app: AppContext):
+    yield FakeMailClient()
 
 
-@lru_cache
-def real_mail_client(app_context: AppContext):
-    return SendGridClient(
-        aiohttp_session=app_http_session(app_context),
+@app_resource
+@asynccontextmanager
+async def real_mail_client(app_context: AppContext) -> AsyncGenerator[SendGridClient, None]:
+    yield SendGridClient(
+        aiohttp_session=await app_http_session(app_context),
         api_key=os.getenv('SEND_GRID_API_KEY', default=''),
         from_address=os.getenv('SEND_GRID_FROM_ADDRESS', default=''),
         url=os.getenv('SEND_GRID_URL', default='')
     )
 
 
-@lru_cache
-def app_mail_client(app: AppContext) -> MailClient:
-    if app.is_fake:
-        return fake_mail_client(app)
-
-    return real_mail_client(app)
+@app_resource
+@asynccontextmanager
+async def app_mail_client(app: AppContext) -> AsyncGenerator[MailClient, None]:
+    if app.is_fake():
+        yield await fake_mail_client(app)
+    else:
+        yield await real_mail_client(app)
