@@ -3,7 +3,7 @@ from unittest import IsolatedAsyncioTestCase
 from acceptance_tests.actions.can_not_kick_member import CanNotKickMember
 from acceptance_tests.actions.is_a_member import IsAMember
 from acceptance_tests.actions.is_not_a_member import IsNotAMember
-from acceptance_tests.actions.leave_club import LetCharacterLeaveClub
+from acceptance_tests.actions.leave_club import KickMember
 from acceptance_tests.book_club_spec import book_club_spec
 from pyplay.play import CharacterCall
 from acceptance_tests.actions.add_member import AddMember
@@ -17,7 +17,7 @@ class TestKickMember(IsolatedAsyncioTestCase):
         character('John').performs(
             BecomePresident(),
             AddMember('Chris'),
-            LetCharacterLeaveClub('Chris'),
+            KickMember('Chris'),
         )
         character('John').asserts(IsNotAMember('Chris'))
 
@@ -26,6 +26,6 @@ class TestKickMember(IsolatedAsyncioTestCase):
         character('John').performs(
             BecomePresident(),
             AddMember('Chris'),
-            LetCharacterLeaveClub('Rocky')
+            KickMember('Rocky')
         )
         character('Chris').asserts(CanNotKickMember('Rocky'))
