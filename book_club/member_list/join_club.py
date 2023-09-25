@@ -10,12 +10,12 @@ from book_club.request_context import RequestContext
 
 
 @dataclass(frozen=True)
-class AddNewMember:
+class JoinClub:
     name: str
     mail_address: str
 
 
-async def add_a_new_member(command: AddNewMember, request_context: RequestContext) -> None:
+async def join_club(command: JoinClub, request_context: RequestContext) -> None:
     address = MailAddress(command.mail_address)
     repository = await member_repository(request_context)
     member_list = await repository.get_member_list()
@@ -23,7 +23,7 @@ async def add_a_new_member(command: AddNewMember, request_context: RequestContex
             name=Name(command.name),
             mail_address=address
         )
-    member_list.append(new_member)
+    member_list.add(new_member)
 
     mail_client = await app_mail_client(request_context.app_context)
 

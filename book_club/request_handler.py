@@ -2,8 +2,9 @@ from functools import lru_cache
 from typing import Any, Type
 
 from book_club.app_context import AppContext
-from book_club.member_list.add_a_new_member import AddNewMember, add_a_new_member
+from book_club.member_list.join_club import JoinClub, join_club
 from book_club.member_list.get_member_list import GetMemberList, get_member_list
+from book_club.member_list.leave_club import LeaveClub, leave_club
 from book_club.request_context import RequestContext
 
 
@@ -47,7 +48,8 @@ class RequestHandler:
 
 def command_handlers():
     return {
-        AddNewMember: add_a_new_member,
+        JoinClub: join_club,
+        LeaveClub: leave_club
     }
 
 
