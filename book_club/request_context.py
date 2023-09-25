@@ -43,3 +43,31 @@ class RequestContext:
 
     async def join(self, context_manager):
         return await self._exit_stack.enter_async_context(context_manager)
+
+
+T = typing.TypeVar('T')
+
+
+class RequestResource(typing.Generic[T]):
+    def __init__(self, f: typing.Callable[[RequestContext], typing.AsyncGenerator[T]]):
+        self._f = f
+        self._generator = None
+        self._created = False
+
+    async def __aenter__(self):
+        return
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        return
+
+    async def __call__(self, app_context: RequestContext) -> T:
+        if not self._created:
+            self._generator = self._f(app_context)
+            self._resource = await self._generator.__anext__()
+            self._created = True
+
+        return self._resource
+
+
+def request_resource(f: typing.Callable[[RequestContext], typing.AsyncGenerator[T]]) -> RequestResource[T]:
+    return RequestResource(f)

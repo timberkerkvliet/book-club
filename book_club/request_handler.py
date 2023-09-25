@@ -2,7 +2,8 @@ from functools import lru_cache
 from typing import Any, Type
 
 from book_club.app_context import AppContext
-from book_club.president.add_a_new_member import AddNewMember, add_a_new_member
+from book_club.member_list.add_a_new_member import AddNewMember, add_a_new_member
+from book_club.member_list.get_member_list import GetMemberList, get_member_list
 from book_club.request_context import RequestContext
 
 
@@ -51,7 +52,9 @@ def command_handlers():
 
 
 def query_handlers():
-    return {}
+    return {
+        GetMemberList: get_member_list
+    }
 
 
 @lru_cache
