@@ -1,21 +1,24 @@
 from asyncio import Event
 from contextlib import asynccontextmanager
+from typing import Awaitable, Callable
 
 from starlette.applications import Starlette
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from uvicorn import Config, Server
 
-from book_club.request_context import President
+from book_club.request_context import Invoker, President
 from book_club.request_handler import RequestHandler
 
 
 class StarletteRequestHandler:
     def __init__(
         self,
-        request_handler: RequestHandler
+        request_handler: RequestHandler,
+        authenticator: Callable[[str], Awaitable[Invoker]]
     ):
         self._request_handler = request_handler
+        self._authenticator = authenticator
 
     async def handle_command(self, request: Request) -> JSONResponse:
         name = request.url.path.lstrip('/')
@@ -31,8 +34,12 @@ class StarletteRequestHandler:
 
         command_type = command_types.pop()
         data = await request.json()
+
+        parts = request.headers.get('Authorization', '').split()
+        token = parts[1] if len(parts) > 1 else None
+
         value = await self._request_handler.handle_command(
-            invoker=President(),
+            invoker=await self._authenticator(token),
             command=command_type(**data)
         )
 

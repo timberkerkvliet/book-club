@@ -1,13 +1,11 @@
 
-from contextlib import asynccontextmanager, AsyncExitStack
+from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from unittest import IsolatedAsyncioTestCase
-from uuid import uuid4
 
 import aiohttp
-import requests
-
 from book_club.app_context import AppContext
+from book_club.request_context import Invoker, Member, President, RequestContext
 from book_club.request_handler import RequestHandler
 from book_club.starlette_adapter import StarletteRequestHandler, starlette_server
 
@@ -17,8 +15,17 @@ class MyTestCommand:
     my_name: str
 
 
-async def handle(request: MyTestCommand, app_context: AppContext):
+async def handle(request: MyTestCommand, request_context: RequestContext):
     return request.my_name
+
+
+@dataclass
+class AmIPresident:
+    pass
+
+
+async def handle_am_i_president(request: AmIPresident, request_context: RequestContext):
+    return request_context.invoker == President()
 
 
 @asynccontextmanager
@@ -27,17 +34,28 @@ async def server(adapter):
         yield None
 
 
+async def authenticate(token: str) -> Invoker:
+    if token == 'president':
+        return President()
+
+    return Member()
+
+
 class TestStarletteAdapter(IsolatedAsyncioTestCase):
-    async def test_happy_path(self):
-        adapter = StarletteRequestHandler(
+    def setUp(self) -> None:
+        self.adapter = StarletteRequestHandler(
             request_handler=RequestHandler(
                 command_handlers={
-                    MyTestCommand: handle
+                    MyTestCommand: handle,
+                    AmIPresident: handle_am_i_president
                 },
                 app_context=AppContext(is_fake=True)
-            )
+            ),
+            authenticator=authenticate
         )
-        async with server(adapter), aiohttp.ClientSession() as session:
+
+    async def test_happy_path(self):
+        async with server(self.adapter), aiohttp.ClientSession() as session:
             response = await session.post(
                 url='http://localhost:8000/MyTestCommand',
                 json={'my_name': 'Timber'}
@@ -49,13 +67,23 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
             )
 
     async def test_get_404_on_non_existing_requests(self):
-        adapter = StarletteRequestHandler(
-            request_handler=RequestHandler(
-                command_handlers={},
-                app_context=AppContext(is_fake=True)
-            )
-        )
-        async with server(adapter), aiohttp.ClientSession() as session:
+        async with server(self.adapter), aiohttp.ClientSession() as session:
             response = await session.post(url='http://localhost:8000/Anything')
 
             self.assertEqual(response.status, 404)
+
+    async def test_request_without_presidential_key(self):
+        async with server(self.adapter), aiohttp.ClientSession() as session:
+            response = await session.post(url='http://localhost:8000/AmIPresident', json={})
+
+            self.assertEqual(await response.json(), False)
+
+    async def test_request_with_presidential_key(self):
+        async with server(self.adapter), aiohttp.ClientSession() as session:
+            response = await session.post(
+                url='http://localhost:8000/AmIPresident',
+                json={},
+                headers={'Authorization': 'Bearer president'}
+            )
+
+            self.assertEqual(await response.json(), True)

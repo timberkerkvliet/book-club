@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import typing
 from contextlib import AsyncExitStack
+from dataclasses import dataclass
 
 from book_club.app_context import AppContext
 
 
+@dataclass
 class President:
     pass
 
