@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from acceptance_tests.actions.make_myself_president import MyInvokerIs
+from acceptance_tests.actions.become_president import MyInvokerIs
 from book_club.app_context import AppContext
 from book_club.member_list.join_club import JoinClub
 from book_club.request_handler import request_handler

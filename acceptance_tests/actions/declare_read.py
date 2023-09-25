@@ -4,24 +4,23 @@ from dataclasses import dataclass
 
 from acceptance_tests.actions.become_president import MyInvokerIs
 from book_club.app_context import AppContext
-from book_club.member_list.join_club import JoinClub
-from book_club.member_list.leave_club import LeaveClub
+from book_club.current_read.declare_new_read import DeclareNewRead
 from book_club.request_handler import request_handler
 from pyplay.action import Action
 from pyplay.action_executor import executes
 from pyplay.actor import Actor
-from pyplay.log_book import LogBook, LogMessage
+from pyplay.log_book import LogBook
 from pyplay.prop import Props
 
 
 @dataclass
-class LetCharacterLeaveClub(Action):
-    character_name: str
+class DeclareRead(Action):
+    book_name: str
 
 
-@executes(LetCharacterLeaveClub)
-async def let_character_leave_club(
-    action: LetCharacterLeaveClub,
+@executes(DeclareRead)
+async def declare_read(
+    action: DeclareRead,
     log_book: LogBook,
     stage_props: Props,
     actor: Actor
@@ -33,5 +32,7 @@ async def let_character_leave_club(
 
     await handler.handle_command(
         invoker=invoker_log.invoker,
-        command=LeaveClub(name=action.character_name,)
+        command=DeclareNewRead(
+            book_name=action.book_name
+        )
     )
