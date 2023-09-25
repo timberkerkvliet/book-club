@@ -73,7 +73,7 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
 
     async def test_get_404_on_non_existing_requests(self):
         async with server(self.adapter), aiohttp.ClientSession() as session:
-            response = await session.post(url='http://localhost:8000/Anything')
+            response = await session.get(url='http://localhost:8000/Anything')
 
             self.assertEqual(response.status, 404)
 

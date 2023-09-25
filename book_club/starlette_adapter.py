@@ -24,55 +24,51 @@ class StarletteRequestHandler:
         self._query_types = query_types
         self._command_types = command_types
 
-    async def handle_post(self, request: Request) -> JSONResponse:
+    async def _handle_request(
+        self,
+        request: Request,
+        request_types: set,
+        data,
+        handler
+    ) -> JSONResponse:
         name = request.url.path.lstrip('/')
 
-        command_types = {
-            command_type
-            for command_type in self._command_types
-            if command_type.__name__ == name
+        request_types = {
+            request_type
+            for request_type in request_types
+            if request_type.__name__ == name
         }
 
-        if len(command_types) == 0:
+        if len(request_types) == 0:
             return JSONResponse({}, status_code=404)
 
-        command_type = command_types.pop()
-        data = await request.json()
+        request_type = request_types.pop()
 
         parts = request.headers.get('Authorization', '').split()
         token = parts[1] if len(parts) > 1 else None
 
-        value = await self._request_handler.handle_command(
-            invoker=await self._authenticator(token),
-            command=command_type(**data)
+        value = await handler(
+            await self._authenticator(token),
+            request_type(**data)
         )
 
         return JSONResponse(value, status_code=200)
+
+    async def handle_post(self, request: Request) -> JSONResponse:
+        return await self._handle_request(
+            request=request,
+            request_types=self._command_types,
+            data=await request.json(),
+            handler=self._request_handler.handle_command
+        )
 
     async def handle_get(self, request: Request) -> JSONResponse:
-        name = request.url.path.lstrip('/')
-
-        query_types = {
-            query_type
-            for query_type in self._query_types
-            if query_type.__name__ == name
-        }
-
-        if len(query_types) == 0:
-            return JSONResponse({}, status_code=404)
-
-        query_type = query_types.pop()
-        data = request.query_params
-
-        parts = request.headers.get('Authorization', '').split()
-        token = parts[1] if len(parts) > 1 else None
-
-        value = await self._request_handler.handle_query(
-            invoker=await self._authenticator(token),
-            query=query_type(**data)
+        return await self._handle_request(
+            request=request,
+            request_types=self._query_types,
+            data=dict(request.query_params),
+            handler=self._request_handler.handle_query
         )
-
-        return JSONResponse(value, status_code=200)
 
 
 @asynccontextmanager
