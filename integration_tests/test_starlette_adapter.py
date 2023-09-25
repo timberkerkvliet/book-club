@@ -5,7 +5,8 @@ from unittest import IsolatedAsyncioTestCase
 
 import aiohttp
 from book_club.app_context import AppContext
-from book_club.request_context import Invoker, Member, President, RequestContext
+from book_club.request_context import RequestContext
+from book_club.invoker import President, Member, Invoker
 from book_club.request_handler import RequestHandler
 from book_club.starlette_adapter import StarletteRequestHandler, starlette_server
 

@@ -7,7 +7,8 @@ from book_club.mail_address import MailAddress
 from book_club.member_list.member import Member
 from book_club.member_list.member_repository import member_repository
 from book_club.name import Name
-from book_club.request_context import President, RequestContext
+from book_club.request_context import RequestContext
+from book_club.invoker import President
 
 
 @dataclass(frozen=True)

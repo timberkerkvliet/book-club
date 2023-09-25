@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from book_club.request_context import Invoker, President
+from book_club.invoker import President, Invoker
 from pyplay.action import Action
 from pyplay.action_executor import executes
 from pyplay.log_book import LogBook, LogMessage

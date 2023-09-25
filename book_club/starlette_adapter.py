@@ -7,7 +7,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from uvicorn import Config, Server
 
-from book_club.request_context import Invoker
+from book_club.invoker import Invoker
 from book_club.request_handler import RequestHandler
 
 

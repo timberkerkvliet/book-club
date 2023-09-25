@@ -1,6 +1,6 @@
 from acceptance_tests.actions.become_president import MyInvokerIs
 from acceptance_tests.actions.member_joined import MemberJoined
-from book_club.request_context import Invoker, Member
+from book_club.invoker import Member, Invoker
 from pyplay.log_book import LogBook
 
 

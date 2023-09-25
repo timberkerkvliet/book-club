@@ -1,6 +1,6 @@
 import os
 
-from book_club.request_context import Invoker, Member, President
+from book_club.invoker import President, Member, Invoker
 
 
 async def authenticate(token: str) -> Invoker:
