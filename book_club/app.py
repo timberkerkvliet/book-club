@@ -1,18 +1,10 @@
-import os
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
 from book_club.app_context import AppContext
-from book_club.request_context import Invoker, Member, President
+from book_club.authenticate import authenticate
 from book_club.request_handler import request_handler
 from book_club.starlette_adapter import starlette_server, StarletteRequestHandler
-
-
-async def authenticate(token: str) -> Invoker:
-    if token == os.getenv('PRESIDENTIAL_TOKEN', ''):
-        return President()
-
-    return Member()
 
 
 @asynccontextmanager
