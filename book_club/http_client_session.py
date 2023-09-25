@@ -1,4 +1,4 @@
-from typing import AsyncContextManager
+from typing import AsyncGenerator
 
 from aiohttp import ClientSession
 
@@ -6,5 +6,6 @@ from book_club.app_context import app_resource, AppContext
 
 
 @app_resource
-def app_http_session(app_context: AppContext) -> AsyncContextManager[ClientSession]:
-    return ClientSession()
+async def app_http_session(app_context: AppContext) -> AsyncGenerator[ClientSession, None]:
+    async with ClientSession() as session:
+        yield session
