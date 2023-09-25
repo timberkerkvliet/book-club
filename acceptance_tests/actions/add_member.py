@@ -15,13 +15,13 @@ from pyplay.prop import Props
 
 
 @dataclass
-class LetCharacterJoinClub(Action):
+class AddMember(Action):
     character_name: str
 
 
-@executes(LetCharacterJoinClub)
+@executes(AddMember)
 async def add_actor_as_new_member(
-    action: LetCharacterJoinClub,
+    action: AddMember,
     log_book: LogBook,
     stage_props: Props,
     actor: Actor

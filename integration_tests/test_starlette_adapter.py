@@ -38,7 +38,7 @@ async def authenticate(token: str) -> Invoker:
     if token == 'president':
         return President()
 
-    return Member()
+    return Member(name='member')
 
 
 class TestStarletteAdapter(IsolatedAsyncioTestCase):
