@@ -16,13 +16,13 @@ from pyplay.prop import Props
 
 
 @dataclass
-class LetCharacterLeaveClub(Action):
+class CanNotKickMember(Action):
     character_name: str
 
 
-@executes(LetCharacterLeaveClub)
+@executes(CanNotKickMember)
 async def let_character_leave_club(
-    action: LetCharacterLeaveClub,
+    action: CanNotKickMember,
     log_book: LogBook,
     stage_props: Props,
     actor: Actor
