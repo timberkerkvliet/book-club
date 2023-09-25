@@ -1,5 +1,5 @@
 from functools import lru_cache
-from typing import Type
+from typing import Any, Type
 
 from book_club.app_context import AppContext
 from book_club.president.add_a_new_member import AddNewMember, add_a_new_member
@@ -7,34 +7,57 @@ from book_club.request_context import RequestContext
 
 
 class RequestHandler:
-    def __init__(self, command_handlers: dict, app_context: AppContext):
+    def __init__(
+        self,
+        command_handlers: dict,
+        query_handlers: dict,
+        app_context: AppContext
+    ):
         self._command_handlers = command_handlers
+        self._query_handlers = query_handlers
         self._app_context = app_context
 
     @property
     def command_types(self) -> set[Type]:
         return set(self._command_handlers.keys())
 
+    def _request_context(self, invoker):
+        return RequestContext(
+            app_context=self._app_context,
+            invoker=invoker
+        )
+
     async def handle_command(
         self,
         invoker,
         command
-    ) -> None:
+    ) -> Any:
         coro = self._command_handlers[type(command)]
-        return await coro(
-            command,
-            RequestContext(
-                app_context=self._app_context,
-                invoker=invoker
-            )
-        )
+        return await coro(command, self._request_context(invoker))
+
+    async def handle_query(
+        self,
+        invoker,
+        query
+    ) -> Any:
+        coro = self._query_handlers[type(query)]
+        return await coro(query, self._request_context(invoker))
+
+
+def command_handlers():
+    return {
+        AddNewMember: add_a_new_member,
+    }
+
+
+def query_handlers():
+    return {}
 
 
 @lru_cache
 def request_handler(app_context: AppContext) -> RequestHandler:
     return RequestHandler(
-        command_handlers={
-            AddNewMember: add_a_new_member,
-        },
+        command_handlers=command_handlers(),
+        query_handlers=query_handlers(),
         app_context=app_context
     )

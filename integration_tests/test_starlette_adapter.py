@@ -47,11 +47,16 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
             request_handler=RequestHandler(
                 command_handlers={
                     MyTestCommand: handle,
+
+                },
+                query_handlers={
                     AmIPresident: handle_am_i_president
                 },
                 app_context=AppContext(is_fake=True)
             ),
-            authenticator=authenticate
+            authenticator=authenticate,
+            command_types={MyTestCommand},
+            query_types={AmIPresident}
         )
 
     async def test_happy_path(self):
@@ -74,15 +79,14 @@ class TestStarletteAdapter(IsolatedAsyncioTestCase):
 
     async def test_request_without_presidential_key(self):
         async with server(self.adapter), aiohttp.ClientSession() as session:
-            response = await session.post(url='http://localhost:8000/AmIPresident', json={})
+            response = await session.get(url='http://localhost:8000/AmIPresident')
 
             self.assertEqual(await response.json(), False)
 
     async def test_request_with_presidential_key(self):
         async with server(self.adapter), aiohttp.ClientSession() as session:
-            response = await session.post(
+            response = await session.get(
                 url='http://localhost:8000/AmIPresident',
-                json={},
                 headers={'Authorization': 'Bearer president'}
             )
 
