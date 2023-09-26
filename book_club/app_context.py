@@ -47,5 +47,5 @@ class AppResource(Generic[T]):
         )
 
 
-def app_resource(f: Callable[[AppContext], AsyncContextManager[T]]) -> AppResource[T]:
-    return AppResource(f)
+def app_resource(f: Callable[[AppContext], AsyncGenerator[T]]) -> AppResource[T]:
+    return AppResource(asynccontextmanager(f))

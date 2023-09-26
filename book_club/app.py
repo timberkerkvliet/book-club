@@ -11,8 +11,8 @@ from book_club.starlette_adapter import starlette_server, StarletteRequestHandle
 
 
 @app_resource
-def starlette_resource(app_context):
-    return starlette_server(
+async def starlette_resource(app_context):
+    server = starlette_server(
         adapter=StarletteRequestHandler(
             request_handler=request_handler(app_context),
             authenticator=authenticate,
@@ -22,6 +22,8 @@ def starlette_resource(app_context):
         host='0.0.0.0',
         port=80
     )
+    async with server:
+        yield None
 
 
 @asynccontextmanager

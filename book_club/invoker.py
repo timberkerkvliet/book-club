@@ -4,17 +4,17 @@ import typing
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(frozen=True)
 class President:
     pass
 
 
-@dataclass
+@dataclass(frozen=True)
 class Member:
     name: str
 
 
-@dataclass
+@dataclass(frozen=True)
 class Anonymous:
     pass
 

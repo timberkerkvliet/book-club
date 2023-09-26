@@ -7,7 +7,6 @@ from book_club.app_context import app_resource, AppContext
 
 
 @app_resource
-@asynccontextmanager
 async def app_http_session(app_context: AppContext) -> AsyncGenerator[ClientSession, None]:
     async with ClientSession() as session:
         yield session
