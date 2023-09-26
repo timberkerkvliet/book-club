@@ -21,7 +21,7 @@ async def declare_current_book(command: DeclareNewRead, request_context: Request
         await mail_client.send(
             mail=Mail(
                 to=member.mail_address,
-                subject='New Read',
+                subject=f'New Read: {command.book_name}',
                 content=f'We will read {command.book_name}'
             )
         )

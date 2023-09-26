@@ -53,7 +53,7 @@ class SendGridClient(MailClient):
                     'email': self._from_address,
                     'name': 'Book Club'
                 },
-                'subject': 'Hey',
+                'subject': mail.subject,
                 'content': [
                     {
                         'type': 'text/plain',
