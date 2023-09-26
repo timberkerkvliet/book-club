@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 from typing import Callable
-from contextlib import AsyncExitStack
+from contextlib import AsyncExitStack, asynccontextmanager
 
 from book_club.app_context import AppContext
 from book_club.invoker import Invoker
@@ -58,4 +58,4 @@ class RequestResource(typing.Generic[T]):
 
 
 def request_resource(f: typing.Callable[[RequestContext], typing.AsyncContextManager[T]]) -> RequestResource[T]:
-    return RequestResource(f)
+    return RequestResource(asynccontextmanager(f))
