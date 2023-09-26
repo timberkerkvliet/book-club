@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from acceptance_tests.actions.get_invoker import get_invoker
 from acceptance_tests.actions.member_joined import MemberJoined
 from book_club.app_context import AppContext
-from book_club.member_list.join_club import JoinClub
+from book_club.member_list.add_member import AddMember as AddMemberCommand
 from book_club.app import request_handler
 from pyplay.action import Action
 from pyplay.action_executor import executes
@@ -31,7 +31,7 @@ async def add_actor_as_new_member(
 
     await handler.handle_command(
         invoker=get_invoker(log_book, actor.character_name),
-        command=JoinClub(
+        command=AddMemberCommand(
             name=action.character_name,
             mail_address=f'{action.character_name}@fake.com',
         )
