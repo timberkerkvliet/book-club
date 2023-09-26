@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from book_club.mail_address import MailAddress
+from book_club.mailing.mail_address import MailAddress
 
 
 @dataclass(frozen=True)

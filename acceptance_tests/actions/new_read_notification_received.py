@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from book_club.app_context import AppContext
-from book_club.mail_client import fake_mail_client
+from book_club.mailing.mail_client import fake_mail_client
 from pyplay.action import Assertion
 from pyplay.action_executor import executes
 from pyplay.actor import Actor

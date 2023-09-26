@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from book_club.mail import Mail
-from book_club.mail_client import app_mail_client
+from book_club.mailing.mail import Mail
+from book_club.mailing.mail_client import app_mail_client
 from book_club.member_list.member_repository import member_repository
 from book_club.request_context import RequestContext
 

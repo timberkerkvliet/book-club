@@ -4,7 +4,6 @@ from dataclasses import dataclass
 
 from acceptance_tests.actions.become_president import MyInvokerIs
 from book_club.app_context import AppContext
-from book_club.mail_client import fake_mail_client
 from book_club.member_list.get_member_list import GetMemberList
 from book_club.app import request_handler
 
