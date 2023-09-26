@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from typing import Any, Type
 
 from book_club.app_context import AppContext
@@ -19,11 +20,14 @@ class RequestHandler:
     def command_types(self) -> set[Type]:
         return set(self._command_handlers.keys())
 
-    def _request_context(self, invoker):
-        return RequestContext(
+    @asynccontextmanager
+    async def _request_context(self, invoker):
+        context = RequestContext(
             app_context=self._app_context,
             invoker=invoker
         )
+        async with context:
+            yield context
 
     async def handle_command(
         self,
@@ -31,7 +35,8 @@ class RequestHandler:
         command
     ) -> Any:
         coro = self._command_handlers[type(command)]
-        return await coro(command, self._request_context(invoker))
+        async with self._request_context(invoker) as context:
+            return await coro(command, context)
 
     async def handle_query(
         self,
@@ -39,4 +44,5 @@ class RequestHandler:
         query
     ) -> Any:
         coro = self._query_handlers[type(query)]
-        return await coro(query, self._request_context(invoker))
+        async with self._request_context(invoker) as context:
+            return await coro(query, context)

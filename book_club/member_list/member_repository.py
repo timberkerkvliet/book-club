@@ -1,6 +1,7 @@
 import os
 import pickle
 from abc import ABC, abstractmethod
+from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
 from book_club.member_list.member import MemberList
@@ -52,6 +53,7 @@ class FileMemberRepository(MemberRepository):
 
 
 @request_resource
+@asynccontextmanager
 async def member_repository(request_context: RequestContext) -> AsyncGenerator[MemberRepository, None]:
     if request_context.app_context.is_fake():
         yield InMemoryMemberRepository()
