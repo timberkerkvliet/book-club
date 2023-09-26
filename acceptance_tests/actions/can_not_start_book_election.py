@@ -6,6 +6,7 @@ from acceptance_tests.actions.get_invoker import get_invoker
 from book_club.app_context import AppContext
 from book_club.book_election.start_book_election import StartBookElection as StartBookElectionCommand
 from book_club.app import request_handler
+from book_club.failure import Failure
 from pyplay.action import Action, Assertion
 from pyplay.action_executor import executes
 from pyplay.actor import Actor
@@ -27,7 +28,9 @@ async def add_actor_as_new_member(
     app_context = await stage_props(AppContext)
     handler = request_handler(app_context)
 
-    await handler.handle_command(
+    result = await handler.handle_command(
         invoker=get_invoker(log_book, actor.character_name),
         command=StartBookElectionCommand(book_names=[])
     )
+
+    assert result == Failure()
