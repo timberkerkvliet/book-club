@@ -9,7 +9,7 @@ class GetMemberList:
     pass
 
 
-async def get_member_list(query: GetMemberList, request_context: RequestContext) -> set[str]:
+async def get_member_list(query: GetMemberList, request_context: RequestContext) -> list[str]:
     repository = await member_repository(request_context)
 
-    return {member.name for member in await repository.get_member_list()}
+    return [member.name for member in await repository.get_member_list()]
