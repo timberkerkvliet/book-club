@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from book_club.failure import Failure
+from book_club.invoker import President
 from book_club.mailing.mail import Mail
 from book_club.mailing.mail_client import app_mail_client
 from book_club.member_list.member_repository import member_repository
@@ -11,7 +13,10 @@ class DeclareNewRead:
     book_name: str
 
 
-async def declare_current_book(command: DeclareNewRead, request_context: RequestContext) -> None:
+async def declare_current_book(command: DeclareNewRead, request_context: RequestContext) -> None | Failure:
+    if request_context.invoker != President():
+        return Failure()
+
     mail_client = await app_mail_client(request_context.app_context)
 
     repository = await member_repository(request_context)

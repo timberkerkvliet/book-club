@@ -1,5 +1,6 @@
 from unittest import IsolatedAsyncioTestCase
 
+from acceptance_tests.actions.can_not_declare_read import CanNotDeclareRead
 from acceptance_tests.actions.declare_read import DeclareRead
 from acceptance_tests.actions.is_a_member import IsAMember
 from acceptance_tests.actions.new_read_notification_received import NewReadNotificationReceived
@@ -20,3 +21,7 @@ class TestDeclareRead(IsolatedAsyncioTestCase):
         )
 
         character('Chris').asserts(NewReadNotificationReceived('Design Patterns'))
+
+    @book_club_spec
+    def test_non_president_can_declare_read(self, character: CharacterCall) -> None:
+        character('John').asserts(CanNotDeclareRead('Design Patterns'))
