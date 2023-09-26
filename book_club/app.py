@@ -1,9 +1,12 @@
 from contextlib import asynccontextmanager
+from functools import lru_cache
 from typing import AsyncGenerator
 
 from book_club.app_context import AppContext
 from book_club.authenticate import authenticate
-from book_club.request_handler import command_handlers, query_handlers, request_handler
+from book_club.query_handlers import query_handlers
+from book_club.command_handlers import command_handlers
+from book_club.request_handler import RequestHandler
 from book_club.starlette_adapter import starlette_server, StarletteRequestHandler
 
 
@@ -25,3 +28,12 @@ async def app(is_fake: bool = False) -> AsyncGenerator[AppContext, None]:
                 )
             )
         yield context
+
+
+@lru_cache
+def request_handler(app_context: AppContext) -> RequestHandler:
+    return RequestHandler(
+        command_handlers=command_handlers(),
+        query_handlers=query_handlers(),
+        app_context=app_context
+    )
