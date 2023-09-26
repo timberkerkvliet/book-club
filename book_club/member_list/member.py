@@ -25,3 +25,6 @@ class MemberList:
 
     def __iter__(self):
         return iter(self._members)
+
+    def __len__(self) -> int:
+        return len(self._members)
