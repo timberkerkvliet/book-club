@@ -12,21 +12,21 @@ from acceptance_tests.actions.welcome_received import WelcomeReceived
 class TestAddMember(IsolatedAsyncioTestCase):
     @book_club_spec
     def test_president_can_add_members(self, character: CharacterCall) -> None:
-        character('John').performs(
+        character('Michael').performs(
             BecomePresident(),
-            AddMember('Chris')
+            AddMember('John')
         )
-        character('John').asserts(IsAMember('Chris'))
+        character('Michael').asserts(IsAMember('John'))
 
     @book_club_spec
     def test_non_president_can_not_add_members(self, character: CharacterCall) -> None:
-        character('John').asserts(CanNotAddMember('Chris'))
+        character('Michael').asserts(CanNotAddMember('John'))
 
     @book_club_spec
     def test_new_member_receives_welcome(self, character: CharacterCall) -> None:
-        character('John').performs(
+        character('Michael').performs(
             BecomePresident(),
-            AddMember('Chris')
+            AddMember('John')
         )
 
-        character('Chris').asserts(WelcomeReceived())
+        character('John').asserts(WelcomeReceived())

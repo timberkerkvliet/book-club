@@ -14,18 +14,18 @@ from acceptance_tests.actions.welcome_received import WelcomeReceived
 class TestKickMember(IsolatedAsyncioTestCase):
     @book_club_spec
     def test_president_can_kick_member(self, character: CharacterCall) -> None:
-        character('John').performs(
+        character('Michael').performs(
             BecomePresident(),
-            AddMember('Chris'),
-            KickMember('Chris'),
+            AddMember('John'),
+            KickMember('John'),
         )
-        character('John').asserts(IsNotAMember('Chris'))
+        character('Michael').asserts(IsNotAMember('John'))
 
     @book_club_spec
     def test_member_can_not_kick(self, character: CharacterCall) -> None:
-        character('John').performs(
+        character('Michael').performs(
             BecomePresident(),
-            AddMember('Chris'),
+            AddMember('John'),
             KickMember('Rocky')
         )
-        character('Chris').asserts(CanNotKickMember('Rocky'))
+        character('John').asserts(CanNotKickMember('Rocky'))
