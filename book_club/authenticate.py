@@ -7,4 +7,4 @@ async def authenticate(token: str) -> Invoker:
     if token == os.getenv('PRESIDENTIAL_TOKEN', ''):
         return President()
 
-    return Member()
+    return Member(token)
