@@ -21,7 +21,11 @@ class AppContext:
     async def __aexit__(self, *exc):
         await self._exit_stack.__aexit__(*exc)
 
-    async def get_resource(self, resource_id: int, context_manager):
+    async def get_resource(
+        self,
+        resource_id: int,
+        context_manager: Callable[[AppContext], AsyncContextManager]
+    ):
         if resource_id not in self._resources:
             self._resources[resource_id] = await self._exit_stack.enter_async_context(context_manager(self))
 
