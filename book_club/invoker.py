@@ -14,4 +14,9 @@ class Member:
     name: str
 
 
-Invoker = typing.Union[President, Member]
+@dataclass
+class Anonymous:
+    pass
+
+
+Invoker = typing.Union[President, Member, Anonymous]

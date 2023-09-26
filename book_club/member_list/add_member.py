@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from book_club.failure import Failure
+from book_club.invoker import President
 from book_club.mailing.mail import Mail
 from book_club.mailing.mail_client import app_mail_client
 from book_club.mailing.mail_address import MailAddress
@@ -15,7 +17,10 @@ class AddMember:
     mail_address: str
 
 
-async def add_member(command: AddMember, request_context: RequestContext) -> None:
+async def add_member(command: AddMember, request_context: RequestContext) -> None | Failure:
+    if request_context.invoker != President():
+        return Failure()
+
     address = MailAddress(command.mail_address)
     repository = await member_repository(request_context)
     member_list = await repository.get_member_list()
