@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from acceptance_tests.actions.become_president import MyInvokerIs
+from book_club.app import App
 from book_club.app_context import AppContext
 from book_club.current_read.declare_new_read import DeclareNewRead
 from book_club.request_handler import request_handler
