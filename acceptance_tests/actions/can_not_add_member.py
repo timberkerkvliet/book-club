@@ -7,7 +7,7 @@ from acceptance_tests.actions.member_joined import MemberJoined
 from book_club.app_context import AppContext
 from book_club.failure import Failure
 from book_club.member_list.add_member import AddMember as AddMemberCommand
-from book_club.app import request_handler
+from book_club.request_handler import request_handler
 from pyplay.action import Action, Assertion
 from pyplay.action_executor import executes
 from pyplay.actor import Actor

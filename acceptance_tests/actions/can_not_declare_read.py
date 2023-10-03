@@ -6,7 +6,7 @@ from acceptance_tests.actions.become_president import MyInvokerIs
 from acceptance_tests.actions.get_invoker import get_invoker
 from book_club.app_context import AppContext
 from book_club.current_read.declare_new_read import DeclareNewRead
-from book_club.app import request_handler
+from book_club.request_handler import request_handler
 from book_club.failure import Failure
 from pyplay.action import Action, Assertion
 from pyplay.action_executor import executes

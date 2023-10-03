@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from acceptance_tests.actions.become_president import MyInvokerIs
 from book_club.app_context import AppContext
 from book_club.current_read.declare_new_read import DeclareNewRead
-from book_club.app import request_handler
+from book_club.request_handler import request_handler
 from pyplay.action import Action
 from pyplay.action_executor import executes
 from pyplay.actor import Actor

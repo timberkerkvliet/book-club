@@ -7,8 +7,13 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from uvicorn import Config, Server
 
+from book_club.app_context import app_resource, AppContext
+from book_club.authenticate import authenticate
+from book_club.command_handlers import command_handlers
+
 from book_club.invoker import Invoker
-from book_club.request_handler import RequestHandler
+from book_club.query_handlers import query_handlers
+from book_club.request_handler import RequestHandler, request_handler
 
 
 class StarletteRequestHandler:
@@ -99,3 +104,19 @@ async def starlette_server(adapter: StarletteRequestHandler, host: str, port: in
         yield None
     finally:
         await server.shutdown()
+
+
+@app_resource
+async def starlette_resource(app_context: AppContext):
+    server = starlette_server(
+        adapter=StarletteRequestHandler(
+            request_handler=request_handler(app_context),
+            authenticator=authenticate,
+            command_types=set(command_handlers().keys()),
+            query_types=set(query_handlers().keys())
+        ),
+        host='0.0.0.0',
+        port=80
+    )
+    async with server:
+        yield None

@@ -1,7 +1,10 @@
 from contextlib import asynccontextmanager
+from functools import lru_cache
 from typing import Any, Type
 
 from book_club.app_context import AppContext
+from book_club.command_handlers import command_handlers
+from book_club.query_handlers import query_handlers
 from book_club.request_context import RequestContext
 
 
@@ -15,10 +18,6 @@ class RequestHandler:
         self._command_handlers = command_handlers
         self._query_handlers = query_handlers
         self._app_context = app_context
-
-    @property
-    def command_types(self) -> set[Type]:
-        return set(self._command_handlers.keys())
 
     @asynccontextmanager
     async def _request_context(self, invoker):
@@ -46,3 +45,12 @@ class RequestHandler:
         coro = self._query_handlers[type(query)]
         async with self._request_context(invoker) as context:
             return await coro(query, context)
+
+
+@lru_cache
+def request_handler(app_context: AppContext) -> RequestHandler:
+    return RequestHandler(
+        command_handlers=command_handlers(),
+        query_handlers=query_handlers(),
+        app_context=app_context
+    )
