@@ -25,8 +25,8 @@ async def declare_read(
     stage_props: Props,
     actor: Actor
 ):
-    app_context = await stage_props(AppContext)
-    handler = request_handler(app_context)
+    app = await stage_props(App)
+    handler = request_handler(app.context)
 
     invoker_log = log_book.find().by_actor(actor.character_name).by_type(MyInvokerIs).one()
 

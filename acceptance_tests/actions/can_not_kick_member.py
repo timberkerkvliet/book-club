@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 from acceptance_tests.actions.become_president import MyInvokerIs
 from acceptance_tests.actions.get_invoker import get_invoker
+from book_club.app import App
 from book_club.app_context import AppContext
 from book_club.member_list.add_member import AddMember
 from book_club.member_list.kick_member import KickMember
@@ -27,8 +28,8 @@ async def let_character_leave_club(
     stage_props: Props,
     actor: Actor
 ):
-    app_context = await stage_props(AppContext)
-    handler = request_handler(app_context)
+    app = await stage_props(App)
+    handler = request_handler(app.context)
 
     await handler.handle_command(
         invoker=get_invoker(log_book, actor.character_name),

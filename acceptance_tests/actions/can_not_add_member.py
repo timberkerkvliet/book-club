@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 from acceptance_tests.actions.get_invoker import get_invoker
 from acceptance_tests.actions.member_joined import MemberJoined
+from book_club.app import App
 from book_club.app_context import AppContext
 from book_club.failure import Failure
 from book_club.member_list.add_member import AddMember as AddMemberCommand
@@ -27,8 +28,8 @@ async def can_not_add_actor_as_new_member(
     stage_props: Props,
     actor: Actor
 ):
-    app_context = await stage_props(AppContext)
-    handler = request_handler(app_context)
+    app = await stage_props(App)
+    handler = request_handler(app.context)
 
     result = await handler.handle_command(
         invoker=get_invoker(log_book, actor.character_name),

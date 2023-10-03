@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 from acceptance_tests.actions.become_president import MyInvokerIs
 from acceptance_tests.actions.get_invoker import get_invoker
+from book_club.app import App
 from book_club.app_context import AppContext
 from book_club.current_read.declare_new_read import DeclareNewRead
 from book_club.request_handler import request_handler
@@ -27,8 +28,8 @@ async def declare_read(
     stage_props: Props,
     actor: Actor
 ):
-    app_context = await stage_props(AppContext)
-    handler = request_handler(app_context)
+    app = await stage_props(App)
+    handler = request_handler(app.context)
 
     result = await handler.handle_command(
         invoker=get_invoker(log_book, actor.character_name),
