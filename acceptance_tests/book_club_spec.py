@@ -13,6 +13,7 @@ from pyplay.play_execution import pyplay_spec
 async def fake_app() -> AsyncGenerator[App, None]:
     app = App(fake_adapters=True)
     create_task(app.run())
+    await app.wait_for_startup()
     yield app
 
 book_club_spec = pyplay_spec(
