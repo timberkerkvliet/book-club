@@ -23,5 +23,5 @@ class TestDeclareRead(IsolatedAsyncioTestCase):
         character('John').asserts(NewReadNotificationReceived('Design Patterns'))
 
     @book_club_spec
-    def test_non_president_can_declare_read(self, character: CharacterCall) -> None:
+    def test_only_president_can_declare_read(self, character: CharacterCall) -> None:
         character('Michael').asserts(CanNotDeclareRead('Design Patterns'))
