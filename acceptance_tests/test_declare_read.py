@@ -17,8 +17,9 @@ class TestDeclareRead(IsolatedAsyncioTestCase):
         character('Michael').performs(
             BecomePresident(),
             AddMember('John'),
-            DeclareRead('Design Patterns')
         )
+
+        character('Michael').performs(DeclareRead('Design Patterns'))
 
         character('John').asserts(NewReadNotificationReceived('Design Patterns'))
 
