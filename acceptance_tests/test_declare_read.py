@@ -13,7 +13,7 @@ from acceptance_tests.actions.welcome_received import WelcomeReceived
 
 class TestDeclareRead(IsolatedAsyncioTestCase):
     @book_club_spec
-    def test_members_receive_declaration_notification(self, character: CharacterCall) -> None:
+    def test_members_receive_notification(self, character: CharacterCall) -> None:
         character('Michael').performs(
             BecomePresident(),
             AddMember('John'),
