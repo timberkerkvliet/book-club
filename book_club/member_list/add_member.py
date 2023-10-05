@@ -6,7 +6,7 @@ from book_club.mailing.mail import Mail
 from book_club.mailing.mail_client import app_mail_client
 from book_club.mailing.mail_address import MailAddress
 from book_club.member_list.member import Member
-from book_club.member_list.member_repository import member_repository
+from book_club.member_list.member_repository import request_member_repository
 from book_club.member_list.name import Name
 from book_club.request_context import RequestContext
 
@@ -22,7 +22,7 @@ async def add_member(command: AddMember, request_context: RequestContext) -> Non
         return Failure()
 
     address = MailAddress(command.mail_address)
-    repository = await member_repository(request_context)
+    repository = await request_member_repository(request_context)
     member_list = await repository.get_member_list()
     new_member = Member(
             name=Name(command.name),
