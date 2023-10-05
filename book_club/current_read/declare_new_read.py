@@ -13,7 +13,7 @@ class DeclareNewRead:
     book_name: str
 
 
-async def declare_current_book(command: DeclareNewRead, request_context: RequestContext) -> None | Failure:
+async def declare_new_read(command: DeclareNewRead, request_context: RequestContext) -> None | Failure:
     if request_context.invoker != President():
         return Failure()
 
