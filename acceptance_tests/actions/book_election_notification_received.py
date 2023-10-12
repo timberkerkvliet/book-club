@@ -25,6 +25,6 @@ async def book_election_notification_received(
     app = await stage_props(App)
     mail_fake = await fake_mail_client(app.context)
     address = f'{actor.character_name}@fake.com'
-    mail = mail_fake.mails[address]
+    mail = mail_fake.last_mail_to(address)
 
     assert 'Book Election' in mail.subject and all(name in mail.content for name in action.book_names)
