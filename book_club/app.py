@@ -4,7 +4,7 @@ from asyncio import Event
 
 from book_club.app_context import AppContext
 
-from book_club.starlette import starlette_resource
+from book_club.starlette_adapter import starlette_resource
 
 
 class App:
