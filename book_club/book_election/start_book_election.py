@@ -14,4 +14,5 @@ class StartBookElection:
 
 
 async def start_book_election(command: StartBookElection, request_context: RequestContext) -> None | Failure:
-    pass
+    if request_context.invoker != President():
+        return Failure()

@@ -5,7 +5,8 @@ from dataclasses import dataclass
 from acceptance_tests.actions.get_invoker import get_invoker
 from book_club.app_context import AppContext
 from book_club.book_election.start_book_election import StartBookElection as StartBookElectionCommand
-from book_club.app import request_handler
+from book_club.request_handler import request_handler
+
 from pyplay.action import Action
 from pyplay.action_executor import executes
 from pyplay.actor import Actor

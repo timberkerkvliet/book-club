@@ -13,5 +13,5 @@ BOOK_NAMES = ['Clean Agile', 'Pragmatic Engineer']
 
 class TestStartElection(IsolatedAsyncioTestCase):
     @book_club_spec
-    def test_(self, character: CharacterCall) -> None:
-        pass
+    def test_only_president_can_start_book_election(self, character: CharacterCall) -> None:
+        character('John').asserts(CanNotStartBookElection())
