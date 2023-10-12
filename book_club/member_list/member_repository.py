@@ -52,7 +52,7 @@ class FileMemberRepository(MemberRepository):
 
 
 @request_resource
-async def member_repository(request_context: RequestContext) -> AsyncGenerator[MemberRepository, None]:
+async def request_member_repository(request_context: RequestContext) -> AsyncGenerator[MemberRepository, None]:
     if request_context.app_context.is_fake():
         yield InMemoryMemberRepository()
     else:

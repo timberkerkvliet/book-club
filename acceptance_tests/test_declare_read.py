@@ -13,15 +13,16 @@ from acceptance_tests.actions.welcome_received import WelcomeReceived
 
 class TestDeclareRead(IsolatedAsyncioTestCase):
     @book_club_spec
-    def test_members_receive_declaration_notification(self, character: CharacterCall) -> None:
+    def test_members_receive_notification(self, character: CharacterCall) -> None:
         character('Michael').performs(
             BecomePresident(),
             AddMember('John'),
-            DeclareRead('Design Patterns')
         )
+
+        character('Michael').performs(DeclareRead('Design Patterns'))
 
         character('John').asserts(NewReadNotificationReceived('Design Patterns'))
 
     @book_club_spec
-    def test_non_president_can_declare_read(self, character: CharacterCall) -> None:
+    def test_only_president_can_declare_read(self, character: CharacterCall) -> None:
         character('Michael').asserts(CanNotDeclareRead('Design Patterns'))

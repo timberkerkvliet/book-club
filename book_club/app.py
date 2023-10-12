@@ -1,44 +1,31 @@
-from contextlib import asynccontextmanager
-from functools import lru_cache
-from typing import AsyncGenerator
+import asyncio
+import signal
+from asyncio import Event
 
-from book_club.app_context import AppContext, app_resource
-from book_club.authenticate import authenticate
-from book_club.query_handlers import query_handlers
-from book_club.command_handlers import command_handlers
-from book_club.request_handler import RequestHandler
-from book_club.starlette_adapter import starlette_server, StarletteRequestHandler
+from book_club.app_context import AppContext
+
+from book_club.starlette import starlette_resource
 
 
-@app_resource
-async def starlette_resource(app_context):
-    server = starlette_server(
-        adapter=StarletteRequestHandler(
-            request_handler=request_handler(app_context),
-            authenticator=authenticate,
-            command_types=set(command_handlers().keys()),
-            query_types=set(query_handlers().keys())
-        ),
-        host='0.0.0.0',
-        port=80
-    )
-    async with server:
-        yield None
+class App:
+    def __init__(self, fake_adapters: bool = False):
+        self._context = AppContext(is_fake=fake_adapters)
+        self._start_up = asyncio.Event()
 
+    @property
+    def context(self) -> AppContext:
+        return self._context
 
-@asynccontextmanager
-async def app(is_fake: bool = False) -> AsyncGenerator[AppContext, None]:
-    context = AppContext(is_fake=is_fake)
-    async with context:
-        if not is_fake:
-            await starlette_resource(context)
-        yield context
+    async def run(self) -> None:
+        async with self._context:
+            if not self._context.is_fake():
+                await starlette_resource(self._context)
 
+            self._start_up.set()
 
-@lru_cache
-def request_handler(app_context: AppContext) -> RequestHandler:
-    return RequestHandler(
-        command_handlers=command_handlers(),
-        query_handlers=query_handlers(),
-        app_context=app_context
-    )
+            event = Event()
+            signal.signal(signal.SIGTERM, event.set)
+            await event.wait()
+
+    async def wait_for_startup(self):
+        await self._start_up.wait()
