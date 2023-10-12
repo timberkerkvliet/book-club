@@ -17,10 +17,10 @@ class MailClient(ABC):
 
 class FakeMailClient(MailClient):
     def __init__(self):
-        self.mails: dict[MailAddress, str] = {}
+        self.mails: dict[MailAddress, Mail] = {}
 
     async def send(self, mail: Mail) -> None:
-        self.mails[mail.to] = mail.content
+        self.mails[mail.to] = mail
 
 
 class SendGridClient(MailClient):

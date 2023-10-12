@@ -21,4 +21,5 @@ async def welcome_received(action: NewReadNotificationReceived, actor: Actor, st
     app = await stage_props(App)
     mail_fake = await fake_mail_client(app.context)
     address = f'{actor.character_name}@fake.com'
-    assert action.book_name in mail_fake.mails[address]
+    mail = mail_fake.mails[address]
+    assert action.book_name in mail.content
