@@ -17,12 +17,8 @@ async def declare_new_read(command: DeclareNewRead, request_context: RequestCont
     if request_context.invoker != President():
         return Failure()
 
-    mail_client = await app_mail_client(request_context.app_context)
-    member_repository = await request_member_repository(request_context)
-
     await mail_all_members(
-        mail_client=mail_client,
-        member_repository=member_repository,
+        request_context=request_context,
         subject=f'New Read: {command.book_name}',
         content=f'We will read {command.book_name}'
     )

@@ -1,4 +1,4 @@
-from unittest import IsolatedAsyncioTestCase
+from unittest import IsolatedAsyncioTestCase, skip
 
 from acceptance_tests.actions.book_election_notification_received import BookElectionNotificationReceived
 from acceptance_tests.actions.can_not_start_book_election import CanNotStartBookElection
@@ -10,8 +10,8 @@ from acceptance_tests.actions.become_president import BecomePresident
 
 BOOK_NAMES = ['Clean Agile', 'Pragmatic Engineer']
 
-
-class TestStartElection(IsolatedAsyncioTestCase):
-    @book_club_spec
-    def test_(self, character: CharacterCall) -> None:
-        pass
+#
+# class TestStartElection(IsolatedAsyncioTestCase):
+#     @book_club_spec
+#     def test_(self, character: CharacterCall) -> None:
+#         pass
