@@ -11,9 +11,18 @@ from pyplay.actor import Actor
 from pyplay.prop import Props
 
 
-@dataclass
 class BookElectionNotificationReceived(Assertion):
-    book_names: list[str]
+    def __init__(self):
+        self.subject_contains = []
+        self.content_contains = []
+
+    def and_subject_contains(self, *pieces: str) -> BookElectionNotificationReceived:
+        self.subject_contains += pieces
+        return self
+
+    def and_content_contains(self, *pieces: str) -> BookElectionNotificationReceived:
+        self.content_contains += pieces
+        return self
 
 
 @executes(BookElectionNotificationReceived)
@@ -27,4 +36,5 @@ async def book_election_notification_received(
     address = f'{actor.character_name}@fake.com'
     mail = mail_fake.last_mail_to(address)
 
-    assert 'Book Election' in mail.subject and all(name in mail.content for name in action.book_names)
+    assert all(piece in mail.subject for piece in action.subject_contains)
+    assert all(name in mail.content for name in action.content_contains)
