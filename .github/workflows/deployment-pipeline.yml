@@ -9,9 +9,9 @@ jobs:
   unit-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: '3.11'
       - name: Install dependencies
@@ -22,9 +22,9 @@ jobs:
   acceptance-tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: '3.11'
     - name: Install dependencies
@@ -35,9 +35,9 @@ jobs:
   integration-tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: '3.11'
     - name: Install dependencies
@@ -50,6 +50,6 @@ jobs:
     needs: [unit-tests, acceptance-tests, integration-tests]
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Trigger Deploy
       run: "curl -X POST -H 'Authorization: Bearer  ${{ secrets.DEPLOY_TOKEN }}' http://bookclub701.nl:8080/deploy/"
