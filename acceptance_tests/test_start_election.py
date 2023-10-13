@@ -7,11 +7,14 @@ from acceptance_tests.book_club_spec import book_club_spec
 from pyplay.play import CharacterCall
 from acceptance_tests.actions.add_member import AddMember
 from acceptance_tests.actions.become_president import BecomePresident
+from acceptance_tests.arrangements.club_with_president_and_member import arrange_club_with_president_and_member
 
 BOOK_NAMES = ['Clean Agile', 'Pragmatic Engineer']
 
-#
-# class TestStartElection(IsolatedAsyncioTestCase):
-#     @book_club_spec
-#     def test_(self, character: CharacterCall) -> None:
-#         pass
+
+class TestStartElection(IsolatedAsyncioTestCase):
+    @book_club_spec
+    def test_members_can_not_start_a_book_election(self, character: CharacterCall) -> None:
+        arrange_club_with_president_and_member(president=character('Michael'), member='John')
+
+        character('John').asserts(CanNotStartBookElection())
