@@ -18,3 +18,11 @@ class TestStartElection(IsolatedAsyncioTestCase):
         arrange_club_with_president_and_member(president=character('Michael'), member='John')
 
         character('John').asserts(CanNotStartBookElection())
+
+    @book_club_spec
+    def test_members_get_notified_about_book_election(self, character: CharacterCall) -> None:
+        arrange_club_with_president_and_member(president=character('Michael'), member='John')
+
+        character('Michael').performs(StartBookElection(BOOK_NAMES))
+
+        character('John').asserts(BookElectionNotificationReceived(BOOK_NAMES))
