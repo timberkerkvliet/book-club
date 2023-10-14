@@ -13,5 +13,8 @@ class StartBookElection:
     book_names: list[str]
 
 
-async def start_book_election(command: StartBookElection, request_context: RequestContext) -> None | Failure:
-    pass
+async def start_book_election(
+    command: StartBookElection,
+    request_context: RequestContext
+) -> None | Failure:
+    return Failure()
