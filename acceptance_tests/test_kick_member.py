@@ -17,10 +17,10 @@ class TestKickMember(IsolatedAsyncioTestCase):
         arrange_club_with_president_and_member(president=character('Michael'), member='John')
 
         character('Michael').performs(KickMember('John'))
-        character('Michael').asserts(IsNotAMember('John'))
+        character('Michael').expects(IsNotAMember('John'))
 
     @book_club_spec
     def test_member_can_not_kick(self, character: CharacterCall) -> None:
         arrange_club_with_president_and_member(president=character('Michael'), member='John')
 
-        character('John').asserts(CanNotKickMember('John'))
+        character('John').expects(CanNotKickMember('John'))

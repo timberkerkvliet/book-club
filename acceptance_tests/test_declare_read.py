@@ -15,7 +15,7 @@ class TestDeclareRead(IsolatedAsyncioTestCase):
 
         character('Michael').performs(DeclareRead(book_name='Design Patterns'))
 
-        character('John').asserts(
+        character('John').expects(
             NotificationReceived()
             .with_content_containing('Design Patterns')
         )
@@ -24,4 +24,4 @@ class TestDeclareRead(IsolatedAsyncioTestCase):
     def test_member_can_not_declare_read(self, character: CharacterCall) -> None:
         arrange_club_with_president_and_member(president=character('Michael'), member='John')
 
-        character('John').asserts(CanNotDeclareRead('Design Patterns'))
+        character('John').expects(CanNotDeclareRead('Design Patterns'))

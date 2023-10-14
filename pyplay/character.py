@@ -21,7 +21,7 @@ class Character:
             )
         return self
 
-    def asserts(self, *assertions) -> Character:
+    def expects(self, *assertions) -> Character:
         return self.performs(*assertions)
 
     @property

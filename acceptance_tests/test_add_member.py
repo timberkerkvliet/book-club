@@ -15,17 +15,17 @@ class TestAddMember(IsolatedAsyncioTestCase):
     def test_president_can_add_members(self, character: CharacterCall) -> None:
         arrange_club_with_president_and_member(president=character('Michael'), member='John')
 
-        character('Michael').asserts(IsAMember('John'))
+        character('Michael').expects(IsAMember('John'))
 
     @book_club_spec
     def test_non_president_can_not_add_members(self, character: CharacterCall) -> None:
-        character('Michael').asserts(CanNotAddMember('John'))
+        character('Michael').expects(CanNotAddMember('John'))
 
     @book_club_spec
     def test_new_member_receives_welcome(self, character: CharacterCall) -> None:
         arrange_club_with_president_and_member(president=character('Michael'), member='John')
 
-        character('John').asserts(
+        character('John').expects(
             NotificationReceived()
             .with_content_containing('Welcome')
         )
