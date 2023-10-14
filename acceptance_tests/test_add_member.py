@@ -8,7 +8,6 @@ from acceptance_tests.book_club_spec import book_club_spec
 from pyplay.play import CharacterCall
 from acceptance_tests.actions.add_member import AddMember
 from acceptance_tests.actions.become_president import BecomePresident
-from acceptance_tests.actions.welcome_received import WelcomeReceived
 
 
 class TestAddMember(IsolatedAsyncioTestCase):
