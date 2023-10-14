@@ -11,23 +11,23 @@ from pyplay.actor import Actor
 from pyplay.prop import Props
 
 
-class BookElectionNotificationReceived(Assertion):
+class NotificationReceived(Assertion):
     def __init__(self):
         self.subject_contains = []
         self.content_contains = []
 
-    def and_subject_contains(self, *pieces: str) -> BookElectionNotificationReceived:
+    def with_subject_containing(self, *pieces: str) -> NotificationReceived:
         self.subject_contains += pieces
         return self
 
-    def and_content_contains(self, *pieces: str) -> BookElectionNotificationReceived:
+    def with_content_containing(self, *pieces: str) -> NotificationReceived:
         self.content_contains += pieces
         return self
 
 
-@executes(BookElectionNotificationReceived)
-async def book_election_notification_received(
-    action: BookElectionNotificationReceived,
+@executes(NotificationReceived)
+async def notification_received(
+    action: NotificationReceived,
     actor: Actor,
     stage_props: Props
 ):
