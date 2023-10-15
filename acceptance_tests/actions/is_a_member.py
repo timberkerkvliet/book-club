@@ -8,7 +8,7 @@ from book_club.app_context import AppContext
 from book_club.member_list.get_member_list import GetMemberList
 from book_club.request_handler import request_handler
 
-from pyplay.action import Assertion
+from pyplay.action import Expectation
 from pyplay.action_executor import executes
 from pyplay.actor import Actor
 from pyplay.log_book import LogBook
@@ -21,7 +21,7 @@ class MyMailAddress:
 
 
 @dataclass
-class IsAMember(Assertion):
+class IsAMember(Expectation):
     member_name: str
 
 

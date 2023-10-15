@@ -10,11 +10,11 @@ from acceptance_tests.actions.become_president import BecomePresident
 from acceptance_tests.arrangements.club_with_president_and_member import arrange_club_with_president_and_member
 
 
-class TestStartElection(IsolatedAsyncioTestCase):
-    @book_club_spec
-    def test_members_can_not_start_a_book_election(self, character: CharacterCall) -> None:
-        pass
-
-    @book_club_spec
-    def test_members_get_notified_about_book_election(self, character: CharacterCall) -> None:
-        pass
+# class TestStartElection(IsolatedAsyncioTestCase):
+#     @book_club_spec
+#     def test_members_can_not_start_a_book_election(self, character: CharacterCall) -> None:
+#         pass
+#
+#     @book_club_spec
+#     def test_members_get_notified_about_book_election(self, character: CharacterCall) -> None:
+#         pass

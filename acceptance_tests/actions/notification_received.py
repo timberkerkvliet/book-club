@@ -5,13 +5,13 @@ from dataclasses import dataclass
 from book_club.app import App
 from book_club.app_context import AppContext
 from book_club.mailing.mail_client import fake_mail_client
-from pyplay.action import Assertion
+from pyplay.action import Expectation
 from pyplay.action_executor import executes
 from pyplay.actor import Actor
 from pyplay.prop import Props
 
 
-class NotificationReceived(Assertion):
+class NotificationReceived(Expectation):
     def __init__(self):
         self.subject_contains = []
         self.content_contains = []

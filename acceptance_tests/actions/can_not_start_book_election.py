@@ -9,7 +9,7 @@ from book_club.book_election.start_book_election import StartBookElection as Sta
 
 from book_club.failure import Failure
 from book_club.request_handler import request_handler
-from pyplay.action import Action, Assertion
+from pyplay.action import Action, Expectation
 from pyplay.action_executor import executes
 from pyplay.actor import Actor
 from pyplay.log_book import LogBook
@@ -17,7 +17,7 @@ from pyplay.prop import Props
 
 
 @dataclass
-class CanNotStartBookElection(Assertion):
+class CanNotStartBookElection(Expectation):
     pass
 
 

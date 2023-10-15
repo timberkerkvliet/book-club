@@ -9,7 +9,7 @@ from book_club.app_context import AppContext
 from book_club.current_read.declare_new_read import DeclareNewRead
 from book_club.request_handler import request_handler
 from book_club.failure import Failure
-from pyplay.action import Action, Assertion
+from pyplay.action import Action, Expectation
 from pyplay.action_executor import executes
 from pyplay.actor import Actor
 from pyplay.log_book import LogBook
@@ -17,7 +17,7 @@ from pyplay.prop import Props
 
 
 @dataclass
-class CanNotDeclareRead(Assertion):
+class CanNotDeclareRead(Expectation):
     book_name: str
 
 
