@@ -7,7 +7,7 @@ from acceptance_tests.actions.start_book_election import StartBookElection
 from acceptance_tests.book_club_spec import book_club_spec
 from acceptance_tests.actions.add_member import AddMember
 from acceptance_tests.actions.become_president import BecomePresident
-from acceptance_tests.arrangements.club_with_president_and_member import arrange_club_with_president_and_member
+from acceptance_tests.arrangements.club_with_president_and_member import set_up_book_club
 
 
 class TestStartElection(IsolatedAsyncioTestCase):

@@ -3,7 +3,7 @@ from unittest import IsolatedAsyncioTestCase
 from acceptance_tests.actions.command_has_failed import CommandHasFailed
 from acceptance_tests.actions.declare_read import DeclareRead
 from acceptance_tests.actions.notification_received import NotificationReceived
-from acceptance_tests.arrangements.club_with_president_and_member import arrange_club_with_president_and_member
+from acceptance_tests.arrangements.club_with_president_and_member import set_up_book_club
 from acceptance_tests.book_club_spec import book_club_spec
 from pyplay.play import CharacterCall
 
@@ -14,7 +14,7 @@ class TestDeclareRead(IsolatedAsyncioTestCase):
         michael = character('Michael')
         john = character('John')
         book_title = 'Design Patterns'
-        arrange_club_with_president_and_member(president=michael, member=john)
+        set_up_book_club(president=michael, member=john)
 
         michael.performs(DeclareRead(book_title))
 
@@ -28,7 +28,7 @@ class TestDeclareRead(IsolatedAsyncioTestCase):
         michael = character('Michael')
         john = character('John')
         book_title = 'Design Patterns'
-        arrange_club_with_president_and_member(president=michael, member=john)
+        set_up_book_club(president=michael, member=john)
 
         john.attempts(DeclareRead(book_title))
 
