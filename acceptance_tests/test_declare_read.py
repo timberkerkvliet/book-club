@@ -25,9 +25,11 @@ class TestDeclareRead(IsolatedAsyncioTestCase):
 
     @book_club_spec
     def test_member_can_not_declare_read(self, character: CharacterCall) -> None:
+        michael = character('Michael')
         john = character('John')
-        arrange_club_with_president_and_member(president=character('Michael'), member=john)
+        book_title = 'Design Patterns'
+        arrange_club_with_president_and_member(president=michael, member=john)
 
-        character('John').attempts(DeclareRead('DP'))
+        john.attempts(DeclareRead(book_title))
 
-        character('John').expects(CommandHasFailed())
+        john.expects(CommandHasFailed())
