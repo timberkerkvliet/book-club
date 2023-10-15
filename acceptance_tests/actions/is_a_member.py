@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from acceptance_tests.actions.become_president import MyInvokerIs
+from acceptance_tests.actions.get_invoker import get_invoker
 from book_club.app import App
 from book_club.app_context import AppContext
 from book_club.member_list.get_member_list import GetMemberList
@@ -30,11 +31,9 @@ async def welcome_received(action: IsAMember, actor: Actor, stage_props: Props, 
     app = await stage_props(App)
     handler = request_handler(app.context)
 
-    invoker_log = log_book.find().by_actor(actor.character_name).by_type(MyInvokerIs).one()
-
-    list = await handler.handle_query(
-        invoker=invoker_log.invoker,
+    member_list = await handler.handle_query(
+        invoker=get_invoker(log_book=log_book, character_name=actor.character_name),
         query=GetMemberList()
     )
 
-    assert action.member_name in list
+    assert action.member_name in member_list
