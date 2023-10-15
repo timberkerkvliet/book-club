@@ -1,6 +1,6 @@
 from unittest import IsolatedAsyncioTestCase
 
-from acceptance_tests.actions.attempt_has_failed import AttemptHasFailed
+from acceptance_tests.actions.attempt_has_failed import CommandHasFailed
 from acceptance_tests.actions.declare_read import DeclareRead
 from acceptance_tests.actions.notification_received import NotificationReceived
 from acceptance_tests.arrangements.club_with_president_and_member import arrange_club_with_president_and_member
@@ -26,4 +26,4 @@ class TestDeclareRead(IsolatedAsyncioTestCase):
 
         character('John').attempts(DeclareRead('DP'))
 
-        character('John').expects(AttemptHasFailed())
+        character('John').expects(CommandHasFailed())
