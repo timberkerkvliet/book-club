@@ -11,18 +11,22 @@ from pyplay.play import CharacterCall
 class TestDeclareRead(IsolatedAsyncioTestCase):
     @book_club_spec
     def test_members_receive_notification(self, character: CharacterCall) -> None:
-        arrange_club_with_president_and_member(president=character('Michael'), member='John')
+        michael = character('Michael')
+        john = character('John')
+        book_title = 'Design Patterns'
+        arrange_club_with_president_and_member(president=michael, member=john)
 
-        character('Michael').performs(DeclareRead(book_name='Design Patterns'))
+        michael.performs(DeclareRead(book_title))
 
-        character('John').expects(
+        john.expects(
             NotificationReceived()
-            .with_content_containing('Design Patterns')
+            .with_content_containing(book_title)
         )
 
     @book_club_spec
     def test_member_can_not_declare_read(self, character: CharacterCall) -> None:
-        arrange_club_with_president_and_member(president=character('Michael'), member='John')
+        john = character('John')
+        arrange_club_with_president_and_member(president=character('Michael'), member=john)
 
         character('John').attempts(DeclareRead('DP'))
 

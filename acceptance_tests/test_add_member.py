@@ -22,7 +22,8 @@ class TestAddMember(IsolatedAsyncioTestCase):
 
     @book_club_spec
     def test_non_president_can_not_add_members(self, character: CharacterCall) -> None:
-        arrange_club_with_president_and_member(president=character('Michael'), member='John')
+        john = character('John')
+        arrange_club_with_president_and_member(president=character('Michael'), member=john)
 
         character('John').attempts(AddMember('Britney'))
 
@@ -30,7 +31,8 @@ class TestAddMember(IsolatedAsyncioTestCase):
 
     @book_club_spec
     def test_new_member_receives_welcome(self, character: CharacterCall) -> None:
-        arrange_club_with_president_and_member(president=character('Michael'), member='John')
+        john = character('John')
+        arrange_club_with_president_and_member(president=character('Michael'), member=john)
 
         character('John').expects(
             NotificationReceived()

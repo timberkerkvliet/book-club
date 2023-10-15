@@ -14,14 +14,16 @@ from acceptance_tests.actions.become_president import BecomePresident
 class TestKickMember(IsolatedAsyncioTestCase):
     @book_club_spec
     def test_president_can_kick_member(self, character: CharacterCall) -> None:
-        arrange_club_with_president_and_member(president=character('Michael'), member='John')
+        john = character('John')
+        arrange_club_with_president_and_member(president=character('Michael'), member=john)
 
         character('Michael').performs(KickMember('John'))
         character('Michael').expects(IsNotAMember('John'))
 
     @book_club_spec
     def test_member_can_not_kick(self, character: CharacterCall) -> None:
-        arrange_club_with_president_and_member(president=character('Michael'), member='John')
+        john = character('John')
+        arrange_club_with_president_and_member(president=character('Michael'), member=john)
 
         character('John').attempts(KickMember('John'))
 

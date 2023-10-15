@@ -4,8 +4,8 @@ from pyplay.character import Character
 from pyplay.name import Name
 
 
-def arrange_club_with_president_and_member(president: Character, member: Name):
+def arrange_club_with_president_and_member(president: Character, member: Character):
     president.performs(
         BecomePresident(),
-        AddMember(member)
+        AddMember(member.name)
     )
