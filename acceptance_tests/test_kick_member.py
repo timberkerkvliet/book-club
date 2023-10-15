@@ -12,15 +12,17 @@ class TestKickMember(IsolatedAsyncioTestCase):
     @book_club_spec
     def test_president_can_kick_member(self, character: CharacterCall) -> None:
         john = character('John')
-        set_up_book_club(president=character('Michael'), member=john)
+        michael = character('Michael')
+        set_up_book_club(president=michael, member=john)
 
-        character('Michael').performs(KickMember('John'))
-        character('Michael').expects(IsNotAMember('John'))
+        michael.performs(KickMember('John'))
+        michael.expects(IsNotAMember('John'))
 
     @book_club_spec
     def test_member_can_not_kick(self, character: CharacterCall) -> None:
         john = character('John')
-        set_up_book_club(president=character('Michael'), member=john)
+        michael = character('Michael')
+        set_up_book_club(president=michael, member=john)
 
         character('John').attempts(KickMember('John'))
 

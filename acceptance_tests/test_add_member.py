@@ -14,20 +14,22 @@ from acceptance_tests.actions.become_president import BecomePresident
 class TestAddMember(IsolatedAsyncioTestCase):
     @book_club_spec
     def test_president_can_add_members(self, character: CharacterCall) -> None:
-        character('Michael').performs(BecomePresident())
+        michael = character('Michael')
+        michael.performs(BecomePresident())
 
-        character('Michael').performs(AddMember('John'))
+        michael.performs(AddMember('John'))
 
-        character('Michael').expects(IsAMember('John'))
+        michael.expects(IsAMember('John'))
 
     @book_club_spec
     def test_non_president_can_not_add_members(self, character: CharacterCall) -> None:
         john = character('John')
-        set_up_book_club(president=character('Michael'), member=john)
+        michael = character('Michael')
+        set_up_book_club(president=michael, member=john)
 
-        character('John').attempts(AddMember('Britney'))
+        john.attempts(AddMember('Britney'))
 
-        character('John').expects(CommandHasFailed())
+        john.expects(CommandHasFailed())
 
     @book_club_spec
     def test_new_member_receives_welcome(self, character: CharacterCall) -> None:
