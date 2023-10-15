@@ -1,11 +1,14 @@
+from dataclasses import dataclass
+
 from acceptance_tests.actions.get_invoker import get_invoker
 from book_club.failure import Failure
 from book_club.request_handler import request_handler
 from pyplay.log_book import LogMessage
 
 
-class FailedCommand(LogMessage):
-    pass
+@dataclass(frozen=True)
+class ExecutedCommand(LogMessage):
+    success: bool
 
 
 async def invoke_api(command, app, log_book, character_name):
@@ -17,6 +20,8 @@ async def invoke_api(command, app, log_book, character_name):
     )
 
     if result == Failure():
-        log_book.write_message(FailedCommand())
+        log_book.write_message(ExecutedCommand(success=False))
+    else:
+        log_book.write_message(ExecutedCommand(success=True))
 
     return result

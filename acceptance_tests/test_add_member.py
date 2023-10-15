@@ -2,7 +2,7 @@ from unittest import IsolatedAsyncioTestCase
 
 from pyplay.play import CharacterCall
 
-from acceptance_tests.actions.attempt_has_failed import CommandHasFailed
+from acceptance_tests.actions.command_has_failed import CommandHasFailed
 from acceptance_tests.actions.is_a_member import IsAMember
 from acceptance_tests.actions.notification_received import NotificationReceived
 from acceptance_tests.arrangements.club_with_president_and_member import arrange_club_with_president_and_member

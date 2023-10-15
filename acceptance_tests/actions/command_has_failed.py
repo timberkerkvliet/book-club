@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from acceptance_tests.actions.invoke_api import FailedCommand
+from acceptance_tests.actions.invoke_api import ExecutedCommand
 from pyplay.action import Expectation
 from pyplay.action_executor import executes
 from pyplay.actor import Actor
@@ -19,5 +19,6 @@ async def declare_read(
     log_book: LogBook,
     actor: Actor
 ):
-    log_book.find().by_actor(actor.character_name).by_type(FailedCommand).one()
+    last_log = log_book.find().by_actor(actor.character_name).by_type(ExecutedCommand).last()
 
+    assert not last_log.success
