@@ -1,6 +1,6 @@
 from unittest import IsolatedAsyncioTestCase
 
-from acceptance_tests.actions.can_not_declare_read import CanNotDeclareRead
+from acceptance_tests.actions.can_not_declare_read import AttemptHasFailed
 from acceptance_tests.actions.declare_read import DeclareRead
 from acceptance_tests.actions.notification_received import NotificationReceived
 from acceptance_tests.arrangements.club_with_president_and_member import arrange_club_with_president_and_member
@@ -24,4 +24,6 @@ class TestDeclareRead(IsolatedAsyncioTestCase):
     def test_member_can_not_declare_read(self, character: CharacterCall) -> None:
         arrange_club_with_president_and_member(president=character('Michael'), member='John')
 
-        character('John').expects(CanNotDeclareRead('Design Patterns'))
+        character('John').attempts(DeclareRead('DP'))
+
+        character('John').expects(AttemptHasFailed())

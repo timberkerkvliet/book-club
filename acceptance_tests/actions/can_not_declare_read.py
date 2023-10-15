@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 from acceptance_tests.actions.become_president import MyInvokerIs
 from acceptance_tests.actions.get_invoker import get_invoker
+from acceptance_tests.actions.invoke_api import FailedCommand
 from book_club.app import App
 from book_club.app_context import AppContext
 from book_club.current_read.declare_new_read import DeclareNewRead
@@ -17,25 +18,14 @@ from pyplay.prop import Props
 
 
 @dataclass
-class CanNotDeclareRead(Expectation):
-    book_name: str
+class AttemptHasFailed(Expectation):
+    pass
 
 
-@executes(CanNotDeclareRead)
+@executes(AttemptHasFailed)
 async def declare_read(
-    action: CanNotDeclareRead,
     log_book: LogBook,
-    stage_props: Props,
     actor: Actor
 ):
-    app = await stage_props(App)
-    handler = request_handler(app.context)
+    log_book.find().by_actor(actor.character_name).by_type(FailedCommand).one()
 
-    result = await handler.handle_command(
-        invoker=get_invoker(log_book, actor.character_name),
-        command=DeclareNewRead(
-            book_name=action.book_name
-        )
-    )
-
-    assert result == Failure()

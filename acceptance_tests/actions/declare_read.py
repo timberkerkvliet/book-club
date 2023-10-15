@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from acceptance_tests.actions.become_president import MyInvokerIs
+from acceptance_tests.actions.invoke_api import invoke_api
 from book_club.app import App
 from book_club.app_context import AppContext
 from book_club.current_read.declare_new_read import DeclareNewRead
@@ -26,14 +27,11 @@ async def declare_read(
     stage_props: Props,
     actor: Actor
 ):
-    app = await stage_props(App)
-    handler = request_handler(app.context)
-
-    invoker_log = log_book.find().by_actor(actor.character_name).by_type(MyInvokerIs).one()
-
-    await handler.handle_command(
-        invoker=invoker_log.invoker,
+    return await invoke_api(
         command=DeclareNewRead(
             book_name=action.book_name
-        )
+        ),
+        app=await stage_props(App),
+        log_book=log_book,
+        character_name=actor.character_name,
     )
