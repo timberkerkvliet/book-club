@@ -23,4 +23,6 @@ class TestKickMember(IsolatedAsyncioTestCase):
     def test_member_can_not_kick(self, character: CharacterCall) -> None:
         arrange_club_with_president_and_member(president=character('Michael'), member='John')
 
-        character('John').expects(CanNotKickMember('John'))
+        character('John').attempts(KickMember('John'))
+
+        character('Michael').expects(IsAMember('John'))
