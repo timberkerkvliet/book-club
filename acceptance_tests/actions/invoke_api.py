@@ -19,9 +19,6 @@ async def invoke_api(command, app, log_book, character_name):
         command=command
     )
 
-    if result == Failure():
-        log_book.write_message(ExecutedCommand(success=False))
-    else:
-        log_book.write_message(ExecutedCommand(success=True))
+    log_book.write_message(ExecutedCommand(success=result != Failure()))
 
     return result
