@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from book_club.failure import Failure
 from book_club.invoker import President
 from book_club.mailing.mail import Mail
-from book_club.mailing.mail_client import app_mail_client
+from book_club.mailing.app_mail_client import app_mail_client
 from book_club.mailing.mail_address import MailAddress
 from book_club.member_list.member import Member
 from book_club.member_list.member_repository import request_member_repository

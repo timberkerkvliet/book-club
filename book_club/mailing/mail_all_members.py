@@ -1,6 +1,7 @@
 from book_club.mailing.mail import Mail
 from book_club.mailing.mail_address import MailAddress
-from book_club.mailing.mail_client import MailClient, app_mail_client
+from book_club.mailing.mail_client import MailClient
+from book_club.mailing.app_mail_client import app_mail_client
 from book_club.member_list.member_repository import MemberRepository, request_member_repository
 from book_club.request_context import RequestContext
 
