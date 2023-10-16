@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from acceptance_tests.actions.get_invoker import get_invoker
+from acceptance_tests.actions.invoke_api import invoke_api
 from book_club.app import App
 from book_club.app_context import AppContext
 from book_club.book_election.start_book_election import StartBookElection as StartBookElectionCommand
@@ -27,12 +28,11 @@ async def add_actor_as_new_member(
     stage_props: Props,
     actor: Actor
 ):
-    app = await stage_props(App)
-    handler = request_handler(app.context)
-
-    await handler.handle_command(
-        invoker=get_invoker(log_book, actor.character_name),
+    await invoke_api(
         command=StartBookElectionCommand(
             book_names=action.book_names
-        )
+        ),
+        app=await stage_props(App),
+        log_book=log_book,
+        character_name=actor.character_name
     )
