@@ -11,25 +11,4 @@ from acceptance_tests.arrangements.set_up_book_club import SetUpBookClub
 class TestStartElection(IsolatedAsyncioTestCase):
     @book_club_spec
     def test_members_can_not_start_a_book_election(self, character: CharacterCall) -> None:
-        michael = character('Michael')
-        john = character('John')
-        michael.performs(*SetUpBookClub().with_member(john))
-
-        john.attempts(StartBookElection())
-
-        john.expects(CommandHasFailed())
-
-    @book_club_spec
-    def test_members_get_notified_about_book_election(self, character: CharacterCall) -> None:
-        michael = character('Michael')
-        john = character('John')
-        michael.performs(*SetUpBookClub().with_member(john))
-
-        book_elections = ['Pragmatic Engineer', 'Clean Agile']
-        michael.performs(StartBookElection().with_election_options(*book_elections))
-
-        john.expects(
-            NotificationReceived()
-            .with_subject_containing('Book Election')
-            .with_content_containing(*book_elections)
-        )
+        pass

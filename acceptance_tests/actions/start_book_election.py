@@ -20,12 +20,12 @@ class StartBookElection(Action):
     def __init__(self):
         self._book_names = []
 
-    def with_election_options(self, *options: str) -> StartBookElection:
+    def with_candidates(self, *options: str) -> StartBookElection:
         self._book_names += options
         return self
 
     @property
-    def election_options(self) -> list[str]:
+    def candidates(self) -> list[str]:
         return self._book_names
 
 
@@ -38,7 +38,7 @@ async def add_actor_as_new_member(
 ):
     await invoke_api(
         command=StartBookElectionCommand(
-            book_names=action.election_options
+            candidates=action.candidates
         ),
         app=await stage_props(App),
         log_book=log_book,
