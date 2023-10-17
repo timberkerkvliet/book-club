@@ -18,4 +18,10 @@ async def start_book_election(
     if request_context.invoker != President():
         return Failure()
 
+    await mail_all_members(
+        request_context=request_context,
+        subject='Book Election',
+        content='\n'.join(command.candidates)
+    )
+
 
