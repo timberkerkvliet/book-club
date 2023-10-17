@@ -18,15 +18,15 @@ from pyplay.prop import Props
 
 class StartBookElection(Action):
     def __init__(self):
-        self._book_names = []
+        self._candidates = []
 
-    def with_candidates(self, *options: str) -> StartBookElection:
-        self._book_names += options
+    def with_candidates(self, *candidates: str) -> StartBookElection:
+        self._candidates += candidates
         return self
 
     @property
     def candidates(self) -> list[str]:
-        return self._book_names
+        return self._candidates
 
 
 @executes(StartBookElection)
