@@ -34,7 +34,7 @@ async def notification_received(
     app = await stage_props(App)
     mail_fake = await fake_mail_client(app.context)
     address = f'{actor.character_name}@fake.com'
-    mail = mail_fake.last_mail_to(address)
+    mail = mail_fake.get_last_mail_sent_to(address)
 
     assert all(piece in mail.subject for piece in action.subject_contains)
     assert all(name in mail.content for name in action.content_contains)

@@ -8,7 +8,7 @@ class FakeMailClient(MailClient):
     def __init__(self):
         self._mails: dict[MailAddress, Mail] = {}
 
-    def last_mail_to(self, address: MailAddress) -> Mail:
+    def get_last_mail_sent_to(self, address: MailAddress) -> Mail:
         return self._mails[address]
 
     async def send(self, mail: Mail) -> None:
