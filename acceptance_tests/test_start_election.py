@@ -19,3 +19,17 @@ class TestStartElection(IsolatedAsyncioTestCase):
 
         john.expects(CommandHasFailed())
 
+    @book_club_spec
+    def test_members_get_notified_about_new_book_election(self, character: CharacterCall) -> None:
+        michael = character('Michael')
+        john = character('John')
+        michael.performs(*SetUpBookClub().with_member(john))
+
+        candidates = ['Pragmatic Engineer', 'Clean Agile']
+        michael.performs(StartBookElection().with_candidates(*candidates))
+
+        john.expects(
+            NotificationReceived()
+            .with_subject_containing('Book Election')
+            .with_content_containing(*candidates)
+        )
